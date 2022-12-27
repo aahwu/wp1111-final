@@ -40,7 +40,6 @@ let books = [
 // };
 
 const cors = Cors();
-dbConnect();
 const apolloServer = new ApolloServer({
   typeDefs: fs.readFileSync(
     './models/schema.graphql',
