@@ -6,6 +6,6 @@ const nextConfig = {
 module.exports = {
   serverRuntimeConfig: {
     PROJECT_ROOT: process.env.NODE_ENV === 'development' ?
-      __dirname : 'out/' + __dirname
+      __dirname : __dirname + '/out'
   }
 };
