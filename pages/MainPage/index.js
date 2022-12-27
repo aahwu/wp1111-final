@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import styled from 'styled-components';
 import KanbanPage from '../../containers/KanbanPage';
 import React, { useEffect, useState } from 'react';
+import { useQuery } from '@apollo/client';
 import { IconButton, Typography } from '@mui/material'
 import { useKanban } from '../../containers/hooks/useKanban';
 import {
@@ -47,6 +48,18 @@ const MainPage = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
+  const {
+    loading, error, data: listsData, subscribeToMore,
+  } = useQuery(GET_LISTS_QUERY, {
+    variables: {
+      input: "AAHLS"
+    }
+  });
+  useEffect(() => {
+    if(listsData) {
+      console.log(listsData)
+    }
+  }, [listsData])
   // useEffect(() => {
   //   if (kanbans) {
   //     console.log(kanbans)
