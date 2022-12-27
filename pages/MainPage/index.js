@@ -17,6 +17,7 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import Loading from '../../components/Loading'
 // import dbConnect from '../../lib/dbConnect';
 // import KanbanModel from "../../models/KanbanModel"
 // import DroppableListModel from "../../models/DroppableListModel"
@@ -66,7 +67,11 @@ const MainPage = () => {
   //     // setKanban(kanbans[0]);
   //   }
   // }, [kanbans])
-
+  if (loading) {
+    return (
+      <Loading />
+    )
+  }
   return (
     <Layout
       style={{
