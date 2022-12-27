@@ -41,7 +41,7 @@ let books = [
 // };
 const { serverRuntimeConfig } = getConfig();
 console.log(serverRuntimeConfig)
-const schemaPath = resolve(serverRuntimeConfig.PROJECT_ROOT, 'public/schema.graphql');
+const schemaPath = resolve(serverRuntimeConfig.PROJECT_ROOT, 'out/public/schema.graphql');
 const typeDefs = readFileSync(schemaPath, 'utf8');
 dbConnect();
 const cors = Cors();
