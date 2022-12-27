@@ -19,6 +19,7 @@ import {
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import Loading from '../../components/Loading'
 import { GET_KANBANS_QUERY, GET_LISTS_QUERY } from "../../graphql/queries";
+import dbConnect from '../../lib/dbConnect';
 // import dbConnect from '../../lib/dbConnect';
 // import KanbanModel from "../../models/KanbanModel"
 // import DroppableListModel from "../../models/DroppableListModel"
@@ -68,11 +69,6 @@ const MainPage = () => {
   //     // setKanban(kanbans[0]);
   //   }
   // }, [kanbans])
-  if (loading) {
-    return (
-      <Loading />
-    )
-  }
   return (
     <Layout
       style={{
@@ -144,7 +140,7 @@ const MainPage = () => {
               background: colorBgContainer,
             }}
           >
-            <KanbanPage />
+            {loading ? <Loading /> : <KanbanPage />}
           </div>
         </Content>
         {/* <Footer
@@ -162,35 +158,30 @@ const MainPage = () => {
 
 // export async function getStaticProps() {
 //   await dbConnect()
-  
-//   /* find all the data in our database */
-//   // const kanbanDoc = await KanbanModel.find({});
-//   // const kanbans = await kanbanDoc.map(async (doc) => {
-//   //   const listDoc = await doc.populate({ path: 'DroppableList', model: DroppableListModel });
-//   //   // console.log(listDoc)
-//   //   const kanban = doc.toObject();
-//   //   kanban._id = kanban._id.toString();
-//   //   return {_id: kanban._id, name: kanban.name }
-
-//   // })
-//   // console.log(kanbans)
-//   let dev = process.env.NODE_ENV !== 'production';
-//   let { DEV_URL, PROD_URL } = process.env;
-//   let res = await fetch(`${dev ? DEV_URL : PROD_URL}/api/graphql`)
-//   // console.log(res)
-//   let data = await res.json();
+//   const {
+//     loading, error, data: listsData, subscribeToMore,
+//   } = useQuery(GET_LISTS_QUERY, {
+//     variables: {
+//       input: "AAHLS"
+//     }
+//   });
+//   // let dev = process.env.NODE_ENV !== 'production';
+//   // let { DEV_URL, PROD_URL } = process.env;
+//   // let res = await fetch(`${dev ? DEV_URL : PROD_URL}/api/graphql`)
+//   // // console.log(res)
+//   // let data = await res.json();
 //   // console.log(data.payload[0].DroppableList)
-//   if (data) {
+//   if (!loading) {
 //     return {
 //       props: {
-//         kanbans: data
+//         kanbans: listsData
 //       }
 //     }
 //   } else {
 //     console.log("Something wrong: " + data.payload)
 //     return {
 //       props: {
-//         kanbans: data
+//         kanbans: listsData
 //       }
 //     }
 //   }
