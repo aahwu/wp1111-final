@@ -21,10 +21,11 @@ const client = new ApolloClient({
 });
 
 export default function App({ Component, pageProps }) {
+  const getLayout = Component.getLayout || ((page) => page);
   return (
     <ApolloProvider client={client} >
       <KanbanProvider>
-        <Component {...pageProps} />
+        {getLayout(<Component {...pageProps} />)}
       </KanbanProvider>
     </ApolloProvider>
   )

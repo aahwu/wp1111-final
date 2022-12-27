@@ -18,39 +18,18 @@ import {
 } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import Loading from '../../components/Loading'
+import { getLayout } from '../../components/Layout/MainLayout'
+import DDWrapper from "../../components/DDContextWrapper";
 import { GET_KANBANS_QUERY, GET_LISTS_QUERY } from "../../graphql/queries";
-import dbConnect from '../../lib/dbConnect';
-// import dbConnect from '../../lib/dbConnect';
-// import KanbanModel from "../../models/KanbanModel"
-// import DroppableListModel from "../../models/DroppableListModel"
-// import DraggableCardModel from "../../models/DraggableCardModel"
 
-const { Header, Content, Footer, Sider } = Layout;
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
-}
-const items = [
-  getItem('Kanban', 'sub1', <AppstoreOutlined />, [
-    getItem('Tom', '3'),
-    getItem('Bill', '4'),
-    getItem('Alex', '5'),
-  ]),
-  getItem('Favorite', 'sub2', <HeartOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-];
 
 const MainPage = () => {
   
-  const [collapsed, setCollapsed] = useState(false);
-  const { setKanban, handleDelete } = useKanban();
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
+  // graphql query
   const {
     loading, error, data: listsData, subscribeToMore,
   } = useQuery(GET_LISTS_QUERY, {
@@ -58,134 +37,98 @@ const MainPage = () => {
       input: "AAHLS"
     }
   });
+
+  // hook
+  const { kanban, setKanban, handleDelete } = useKanban();
   useEffect(() => {
     if(listsData) {
-      console.log(listsData)
+      const { lists } = listsData;
+      setKanban(lists);
     }
   }, [listsData])
-  // useEffect(() => {
-  //   if (kanbans) {
-  //     console.log(kanbans)
-  //     // setKanban(kanbans[0]);
-  //   }
-  // }, [kanbans])
+
+  // move element from startIndex to endIndex
+  const reorder = (listObject, startIndex, endIndex) => {
+    const result = Array.from(listObject.cards);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    const newListObject = {...listObject};
+    newListObject.cards = result;
+    
+    return newListObject;
+  };
+
+  // move element across list
+  const move = (sourceObject, destinationObject, droppableSource, droppableDestination) => {
+    const sourceClone = Array.from(sourceObject.cards);
+    const destClone = Array.from(destinationObject.cards);
+    const [removed] = sourceClone.splice(droppableSource.index, 1);
+  
+    destClone.splice(droppableDestination.index, 0, removed);
+  
+    const result = {};
+    const newSourceObject = {...sourceObject};
+    const newDestinationObject = {...destinationObject};
+    newSourceObject.cards = sourceClone;
+    newDestinationObject.cards = destClone;
+    result[droppableSource.droppableId] = newSourceObject;
+    result[droppableDestination.droppableId] = newDestinationObject;
+  
+    return result;
+  };
+
+  // onDragEnd function
+  const onDragEnd = (result) => {
+    const { source, destination } = result;
+
+    // dropped outside the list
+    if (!destination) {
+      return;
+    }
+    const sInd = +source.droppableId;
+    const dInd = +destination.droppableId;
+
+    if (sInd === dInd) {
+      const items = reorder(kanban[sInd], source.index, destination.index);
+      console.log(items)
+      const newKanban = [...kanban];
+      newKanban[sInd] = items;
+      console.log(newKanban)
+      setKanban(newKanban);
+    } else {
+      const result = move(kanban[sInd], kanban[dInd], source, destination);
+      const newKanban = [...kanban];
+      newKanban[sInd] = result[sInd];
+      newKanban[dInd] = result[dInd];
+
+      setKanban(newKanban);
+    }
+  }
+
   return (
-    <Layout
-      style={{
-        minHeight: '100vh',
-      }}
-    >
-      <Sider
-        // collapsible
-        // collapsed={collapsed}
-        // onCollapse={(value) => setCollapsed(value)}
+    <>
+      <Breadcrumb
         style={{
-          width: 250,
-          minWidth: 250,
-          
-        }}  
+          margin: '16px 0',
+        }}
       >
-        <div
-          style={{
-            height: 32,
-            margin: 8,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-            // background: 'rgba(255, 255, 255, 0.2)',
-          }}
-        >
-          {(collapsed) ? null : <Typography 
-            style={{
-              color: 'white',
-            }}
-          >
-            Inarro
-          </Typography>}
-          <IconButton>
-            <LogoutOutlined 
-              style={{
-                color: 'white',
-                fontSize: 20,
-              }}
-            />
-          </IconButton>
-        </div>
-        <Menu theme="dark" mode="inline" items={items} />
-      </Sider>
-      <Layout className="site-layout">
-        {/* <Header
-          style={{
-            padding: 24,
-            // background: colorBgContainer,
-          }}
-        /> */}
-        <Content
-          style={{
-            margin: '0 16px',
-          }}
-        >
-          <Breadcrumb
-            style={{
-              margin: '16px 0',
-            }}
-          >
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-          </Breadcrumb>
-          <div
-            style={{
-              padding: 24,
-              minHeight: '90vh',
-              background: colorBgContainer,
-            }}
-          >
-            {loading ? <Loading /> : <KanbanPage />}
-          </div>
-        </Content>
-        {/* <Footer
-          style={{
-            textAlign: 'center',
-          }}
-        >
-          Ant Design ©2018 Created by Ant UED
-        </Footer> */}
-      </Layout>
-    </Layout>
+        <Breadcrumb.Item>User</Breadcrumb.Item>
+        <Breadcrumb.Item>Bill</Breadcrumb.Item>
+      </Breadcrumb>
+      <div
+        style={{
+          padding: 24,
+          minHeight: '90vh',
+          background: colorBgContainer,
+        }}
+      >
+        {loading ? <Loading /> : <DDWrapper kanban={kanban} onDragEnd={onDragEnd} handleDelete={handleDelete} />}
+      </div>
+    </>
   );
 }
 
-
-// export async function getStaticProps() {
-//   await dbConnect()
-//   const {
-//     loading, error, data: listsData, subscribeToMore,
-//   } = useQuery(GET_LISTS_QUERY, {
-//     variables: {
-//       input: "AAHLS"
-//     }
-//   });
-//   // let dev = process.env.NODE_ENV !== 'production';
-//   // let { DEV_URL, PROD_URL } = process.env;
-//   // let res = await fetch(`${dev ? DEV_URL : PROD_URL}/api/graphql`)
-//   // // console.log(res)
-//   // let data = await res.json();
-//   // console.log(data.payload[0].DroppableList)
-//   if (!loading) {
-//     return {
-//       props: {
-//         kanbans: listsData
-//       }
-//     }
-//   } else {
-//     console.log("Something wrong: " + data.payload)
-//     return {
-//       props: {
-//         kanbans: listsData
-//       }
-//     }
-//   }
-  
-// }
+MainPage.getLayout = getLayout;
 
 export default MainPage;
