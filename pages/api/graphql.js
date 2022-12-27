@@ -1,6 +1,6 @@
 import { gql, ApolloServer } from "apollo-server-micro";
 import Cors from "micro-cors";
-import * as fs from 'fs'
+import { readFileSync } from 'fs';
 import {ApolloServerPluginLandingPageGraphQLPlayground} from "apollo-server-core"
 import KanbanModel from "../../models/KanbanModel";
 import DroppableListModel from "../../models/DroppableListModel";
@@ -38,13 +38,11 @@ let books = [
 //       }
 //   },
 // };
-
+const typeDefs = readFileSync('./models/schema.graphql', { encoding: 'utf-8' });
+dbConnect();
 const cors = Cors();
 const apolloServer = new ApolloServer({
-  typeDefs: fs.readFileSync(
-    './models/schema.graphql',
-    'utf-8'
-  ),
+  typeDefs,
   resolvers: {
     Query,
     Mutation,
