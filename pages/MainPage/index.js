@@ -18,7 +18,7 @@ import {
 } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import Loading from '../../components/Loading'
-import { GET_KANBANS_QUERY, GET_LISTS_QUERY } from "../graphql/queries";
+import { GET_KANBANS_QUERY, GET_LISTS_QUERY } from "../../graphql/queries";
 // import dbConnect from '../../lib/dbConnect';
 // import KanbanModel from "../../models/KanbanModel"
 // import DroppableListModel from "../../models/DroppableListModel"
