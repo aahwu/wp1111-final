@@ -12,7 +12,7 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons';
 
-const Sidebar = ({ sidebarItem }) => {
+const Sidebar = ({ sidebarItem, selectedId, handleOnClick }) => {
   return (
     <Layout.Sider
       // collapsible
@@ -24,7 +24,7 @@ const Sidebar = ({ sidebarItem }) => {
         
       }}  
     >
-      <div
+      {/* <div
         style={{
           height: 32,
           margin: 8,
@@ -47,8 +47,14 @@ const Sidebar = ({ sidebarItem }) => {
             }}
           />
         </IconButton>
-      </div>
-      <Menu theme="dark" mode="inline" items={sidebarItem.items} />
+      </div> */}
+      <Menu
+        theme="dark"
+        mode="inline"
+        items={sidebarItem.items}
+        defaultOpenKeys={['sub1']}
+        onClick={handleOnClick}
+      />
     </Layout.Sider>
   )
 }

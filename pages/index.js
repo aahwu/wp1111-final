@@ -1,7 +1,6 @@
 import Head from 'next/head'
-import App from '../containers/App'
 import AuthPage from './AuthPage'
-import Loading from '../components/Loading'
+import Loading from '../components/Common/Loading'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import dbConnect from '../lib/dbConnect'

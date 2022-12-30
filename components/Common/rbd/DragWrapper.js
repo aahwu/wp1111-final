@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import DeleteButtion from './DeleteButton'
+import DeleteButtion from '../DeleteButton'
 import { Draggable } from "react-beautiful-dnd";
 
 const Wrapper = styled.div`

@@ -14,18 +14,11 @@ import { resolve } from 'path';
 import { readFileSync } from 'fs';
 import getConfig from 'next/config';
 
-let books = [
-    {
-        "id": 0,
-        "name": "JavaScript for Dummies"
-    }
-  // ... Write a few more ...
-]
-
 const typeDefs = gql`
   type Query {
-    kanbans(query: String): [Kanban!]
+    kanbans: [Kanban!]
     lists(query: String!): [List!]
+    getListsById(query: ID!): [List!]
     # cards(query: String!): Kanban!
   }
 

@@ -1,26 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { useQuery } from '@apollo/client';
-import DDWrapper from "../components/DDContextWrapper";
+import DDWrapper from "../components/Common/rbd/DDContextWrapper";
 import { useKanban } from "./hooks/useKanban";
-import { GET_KANBANS_QUERY, GET_LISTS_QUERY } from "../graphql/queries";
+import { useQuery } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
+import Loading from "../components/Common/Loading";
+import { GET_KANBANS_QUERY, GET_LISTS_QUERY, GET_LISTS_BY_ID_QUERY } from "../graphql/queries";
 
-const KanbanPage = () => {
+const Kanban = () => {
 
+  // hook
+  const { lists, setLists, selectedKanbanId, handleDelete } = useKanban();
+  
   // graphql query
   const {
     loading, error, data: listsData, subscribeToMore,
-  } = useQuery(GET_LISTS_QUERY, {
+  } = useQuery(GET_LISTS_BY_ID_QUERY, {
     variables: {
-      input: "AAHLS"
+      input: selectedKanbanId
     }
   });
 
-  // hook
-  const { kanban, setKanban, handleDelete } = useKanban();
   useEffect(() => {
-    if(listsData) {
-      const { lists } = listsData;
-      setKanban(lists);
+    if(typeof listsData !== 'undefined') {
+      console.log(listsData)
+      setLists(listsData.getListsById);
     }
   }, [listsData])
 
@@ -67,24 +69,24 @@ const KanbanPage = () => {
     const dInd = +destination.droppableId;
 
     if (sInd === dInd) {
-      const items = reorder(kanban[sInd], source.index, destination.index);
+      const items = reorder(lists[sInd], source.index, destination.index);
       console.log(items)
-      const newKanban = [...kanban];
-      newKanban[sInd] = items;
-      console.log(newKanban)
-      setKanban(newKanban);
+      const newLists = [...lists];
+      newLists[sInd] = items;
+      console.log(newLists)
+      setLists(newLists);
     } else {
-      const result = move(kanban[sInd], kanban[dInd], source, destination);
-      const newKanban = [...kanban];
-      newKanban[sInd] = result[sInd];
-      newKanban[dInd] = result[dInd];
+      const result = move(lists[sInd], lists[dInd], source, destination);
+      const newLists = [...lists];
+      newLists[sInd] = result[sInd];
+      newLists[dInd] = result[dInd];
 
-      setKanban(newKanban);
+      setLists(newLists);
     }
   }
   return (
-    <DDWrapper kanban={kanban} onDragEnd={onDragEnd} handleDelete={handleDelete} />
+    loading ? <Loading /> : <DDWrapper lists={lists} onDragEnd={onDragEnd} handleDelete={handleDelete} />
   )
 }
 
-export default KanbanPage;
+export default Kanban;

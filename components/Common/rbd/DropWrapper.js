@@ -26,7 +26,8 @@ const DropWrapper = ({ list, listInd, handleDelete }) => {
           style={getListStyle(snapshot.isDraggingOver)}
           {...provided.droppableProps}
         >
-          {list.cards.map((card, index) => (
+          {(!list.cards) ? <></>
+          : list.cards.map((card, index) => (
             <DragWrapper card={card} cardInd={index} listInd={listInd} handleDelete={handleDelete} key={card._id} />
           ))}
         </div>

@@ -8,11 +8,11 @@ const Wrapper = styled.div`
   align-content: space-between;
 `;
 
-const DDWrapper = ({ onDragEnd, kanban, handleDelete }) => {
+const DDWrapper = ({ onDragEnd, lists, handleDelete }) => {
   return (
     <Wrapper>
       <DragDropContext onDragEnd={onDragEnd}>
-        {kanban.map((list, index) => (
+        {lists.map((list, index) => (
           <DropWrapper list={list} listInd={index} handleDelete={handleDelete} key={list._id} />
         ))}
       </DragDropContext>

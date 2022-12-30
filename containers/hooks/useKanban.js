@@ -1,8 +1,10 @@
 import { useState, useEffect, createContext, useContext } from "react";
 
 const KanbanContext = createContext({
-  kanban: [],
+  lists: [],
+  kanbans: [],
   handleDelete: () => {},
+  selectedKanbanId: '',
 });
 
 // generate fake array data: [ { id: ..., content: 'item ${ k+offset }}, ... ]
@@ -17,33 +19,39 @@ const getItems = (count, offset = 0) => {
 
 const KanbanProvider = (props) => {
 
-  const [kanban, setKanban] = useState([]);
+  const [lists, setLists] = useState([]);
+  const [kanbans, setKanbans] = useState([]);
+  const [selectedKanbanId, setSelectedKanbanId] = useState('');
 
   // handleDelete
   const handleDelete = (listInd, cardInd) => () => {
-    const newKanban = [...kanban];
-    const listObject = newKanban[listInd];
+    const newLists = [...lists];
+    const listObject = newLists[listInd];
     const result = Array.from(listObject.cards);
     console.log(result);
     result.splice(cardInd, 1);
 
     const newListObject = {...listObject};
     newListObject.cards = result;
-    newKanban[listInd] = newListObject;
+    newLists[listInd] = newListObject;
 
-    setKanban(
-      newKanban
+    setLists(
+      newLists
     );
   }
 
-  useEffect(() => {
-    // console.log(kanban)
-  }, [kanban])
+  // handle onclick of menu
+  const handleOnClick = ({ key }) => {
+    setSelectedKanbanId(key)
+    console.log(key)
+  }
+
 
   return (
     <KanbanContext.Provider
       value={{
-        kanban, setKanban, handleDelete
+        lists, kanbans, selectedKanbanId, setLists, setKanbans, setSelectedKanbanId, 
+        handleDelete, handleOnClick
       }}
       {...props}
     />
