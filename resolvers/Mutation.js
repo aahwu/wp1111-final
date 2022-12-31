@@ -13,12 +13,10 @@ const Mutation = {
     if (!kanban) {
       throw new Error('Kanban not exist');
     }
-    for (const listId in kanban.DroppableList) {
+    for (const listId of kanban.DroppableList) {
       const list = await DroppableListModel.findByIdAndRemove(listId);
-      console.log(list)
-      for (const cardId in list.DraggableCard) {
+      for (const cardId of list.DraggableCard) {
         const card = await DraggableCardModel.findByIdAndRemove(cardId);
-        console.log(card)
       }
     }
     return kanban;
@@ -67,7 +65,7 @@ const Mutation = {
       throw new Error('List not exist');
     }
     const kanban = await KanbanModel.findByIdAndUpdate(list.parentId, { $pull: { 'DroppableList': listId } });
-    for (const cardId in list.DraggableCard) {
+    for (const cardId of list.DraggableCard) {
       await DraggableCardModel.findByIdAndRemove(cardId);
     }
 
