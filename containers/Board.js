@@ -42,7 +42,7 @@ const Board = () => {
     variables: {
       input: selectedKanbanId
     },
-    // fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network',
   });
 
   useEffect(() => {
