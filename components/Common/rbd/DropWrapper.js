@@ -69,7 +69,7 @@ const DropWrapper = ({ list, listInd, handleDelete }) => {
         }}
       >
         <TextField
-          value={list.name}
+          // value={list.name}
           onChange={(e) => handleUpdateList(e)}
           placeholder='Untitled'
           variant='outlined'
