@@ -161,18 +161,18 @@ const KanbanProvider = (props) => {
     }
   }, [deletedListData])
 
-  useEffect(() => {
-    if (updatedListData) {
-      const updatedList = updatedListData.updateList;
-      const newLists = [...lists];
-      const index = newLists.findIndex((listObject) => listObject._id === updatedList._id);
-      const newList = {...newLists[index]}
-      newList.name = updatedList.name;
-      newLists[index] = newList;
-      console.log(newLists)
-      setLists([...newLists])
-    }
-  }, [updatedListData])
+  // useEffect(() => {
+  //   if (updatedListData) {
+  //     const updatedList = updatedListData.updateList;
+  //     const newLists = [...lists];
+  //     const index = newLists.findIndex((listObject) => listObject._id === updatedList._id);
+  //     const newList = {...newLists[index]}
+  //     newList.name = updatedList.name;
+  //     newLists[index] = newList;
+  //     console.log(newLists)
+  //     setLists([...newLists])
+  //   }
+  // }, [updatedListData])
 
   return (
     <KanbanContext.Provider
