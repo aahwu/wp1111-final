@@ -8,7 +8,7 @@ import { useKanban } from '../../../containers/hooks/useKanban';
 
 const DropWrapper = ({ list, listInd, handleDelete }) => {
 
-  const { setModalOpened, createCard, deleteList, updateList } = useKanban(); 
+  const { lists, setLists, setModalOpened, createCard, deleteList, updateList } = useKanban(); 
   
   const handleCreateCard = async () => {
     try {
@@ -33,6 +33,13 @@ const DropWrapper = ({ list, listInd, handleDelete }) => {
   const handleUpdateList = async (e) => {
     try {
       const newName = e.target.value;
+      const newLists = [...lists];
+      const index = newLists.findIndex((listObject) => listObject._id === list._id);
+      const newList = {...newLists[index]}
+      newList.name = newName;
+      newLists[index] = newList;
+      console.log(newLists)
+      setLists([...newLists])
       await updateList({
         variables: {
           listId: list._id,
