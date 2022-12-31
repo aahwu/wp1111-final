@@ -5,11 +5,13 @@ import { Box, Button, Typography, Divider, TextField, IconButton, Card, listSubh
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import { useKanban } from '../../../containers/hooks/useKanban';
+import { useState } from 'react';
 
 const DropWrapper = ({ list, listInd, handleDelete }) => {
 
   const { lists, setLists, setModalOpened, createCard, deleteList, updateList } = useKanban(); 
-  
+  const [localList, setLocalList] = useState(list);
+
   const handleCreateCard = async () => {
     try {
       await createCard({
@@ -69,7 +71,7 @@ const DropWrapper = ({ list, listInd, handleDelete }) => {
         }}
       >
         <TextField
-          // value={list.name}
+          defaultValue={list.name}
           onChange={(e) => handleUpdateList(e)}
           placeholder='Untitled'
           variant='outlined'
