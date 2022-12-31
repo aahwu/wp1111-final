@@ -90,12 +90,19 @@ const Board = () => {
 
   return (
     loading ? <Loading /> : 
-    <>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%'
+      }}
+    >
       <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        width: '100%'
+        width: '100%',
+        flex: 0,
       }}>
         <IconButton variant='outlined' onClick={addFavourite}>
           {
@@ -113,9 +120,19 @@ const Board = () => {
       <div
         style={{
           padding: '10px 50px',
+          flex: 2,
+
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        <div>
+        <div
+          // style={{
+          //   display: 'flex',
+          //   flexDirection: 'column',
+          //   height: '100%'
+          // }}
+        >
           {/* <EmojiPicker icon={icon} onChange={onIconChange} /> */}
           <TextField
             value={title}
@@ -146,7 +163,7 @@ const Board = () => {
         <Kanban />
       </div>
       <CardModal />
-    </>
+    </div>
   )
 }
 

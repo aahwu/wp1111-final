@@ -6,7 +6,7 @@ import { Box, Button, Typography, Divider, TextField, IconButton, Card } from '@
 const Kanban = () => {
 
   // hook
-  const { lists, setLists, selectedKanbanId, updateCardPosition } = useKanban();
+  const { lists, setLists, selectedKanbanId, updateCardPosition, createList } = useKanban();
 
   // move element from startIndex to endIndex
   const reorder = (listObject, startIndex, endIndex) => {
@@ -83,8 +83,13 @@ const Kanban = () => {
     }
   }
 
-  const createSection = async () => {
+  const handleCreateList = async () => {
     try {
+      await createList({
+        variables: {
+          kanbanId: selectedKanbanId
+        }
+      })
     } catch (err) {
       alert(err)
     }
@@ -95,16 +100,17 @@ const Kanban = () => {
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        flex: 0,
       }}>
-        <Button onClick={createSection}>
-          Add section
+        <Button onClick={handleCreateList}>
+          Add list
         </Button>
-        <Typography variant='body2' fontWeight='700'>
-          {lists.length} Sections
+        <Typography variant='body2' fontWeight='700' color='black'>
+          {lists.length} Lists
         </Typography>
       </div>
-      <Divider sx={{ margin: '10px 0' }} />
+      <Divider sx={{ margin: '10px 0', flex: 0 }} />
       <DDWrapper lists={lists} onDragEnd={onDragEnd} />
     </>
   )

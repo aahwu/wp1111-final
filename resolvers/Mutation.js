@@ -32,35 +32,35 @@ const Mutation = {
   },
 
   /* List mutation */
-  createList: async (parent, { data }, { pubsub, KanbanModel, DroppableListModel }) => {
-    const kanban = await KanbanModel.findById(data.kanbanId);
+  createList: async (parent, { kanbanId }, { KanbanModel, DroppableListModel }) => {
+    const kanban = await KanbanModel.findById(kanbanId);
 
     if (!kanban) {
       throw new Error('Kanban not exist');
     }
 
-    const newList = await new DroppableListModel({ name: data.name, parentId: data.kanbanId }).save();
+    const newList = await new DroppableListModel({ parentId: kanbanId }).save();
     kanban.DroppableList.push(newList);
     await kanban.save();
 
-    pubsub.publish(`kanban ${data.kanbanId}`, {
-      list: newList,
-    });
+    // pubsub.publish(`kanban ${data.kanbanId}`, {
+    //   list: newList,
+    // });
 
     return newList;
   },
-  deleteList: async (parent, { id }, { KanbanModel, DroppableListModel }) => {
-    const list = await DroppableListModel.findByIdAndRemove(id);
+  deleteList: async (parent, { listId }, { KanbanModel, DroppableListModel }) => {
+    const list = await DroppableListModel.findByIdAndRemove(listId);
 
     if (!list) {
       throw new Error('List not exist');
     }
-    const kanban = await KanbanModel.findByIdAndUpdate(list.parentId, { $pull: { 'DroppableList': id } });
+    const kanban = await KanbanModel.findByIdAndUpdate(list.parentId, { $pull: { 'DroppableList': listId } });
 
     return list;
   },
-  updateList: async (parent, { id, data }, { DroppableListModel }) => {
-    const list = await DroppableListModel.findByIdAndUpdate(id, data);
+  updateList: async (parent, { listId, data }, { DroppableListModel }) => {
+    const list = await DroppableListModel.findByIdAndUpdate(listId, data ,{ new: true });
 
     if (!list) {
       throw new Error('List not exist');

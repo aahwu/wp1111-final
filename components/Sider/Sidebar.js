@@ -11,84 +11,51 @@ import {
   HeartOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
+import { useState } from 'react';
 
 const Sidebar = ({ sidebarItem, selectedId, handleOnClick }) => {
+  const [collapsed, setCollapsed] = useState(false);
   return (
-    <div
-      style={{
-        flex: 'row'
-      }}
+    <Layout.Sider
+      collapsible
+      collapsed={collapsed}
+      onCollapse={(value) => setCollapsed(value)}
     >
       <div
         style={{
           height: 32,
           margin: 8,
-          backgroundColor: 'white',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'space-between'
+          // background: 'rgba(255, 255, 255, 0.2)',
         }}
       >
         <Typography style={{
-          color: 'black',
+          color: 'white',
         }}>
           {sidebarItem.user}
         </Typography>
         <IconButton>
           <LogoutOutlined 
             style={{
-              // color: 'black',
+              color: 'white',
               fontSize: 20,
             }}
           />
         </IconButton>
       </div>
-      <Layout.Sider
-        // collapsible
-        // collapsed={collapsed}
-        // onCollapse={(value) => setCollapsed(value)}
+      <Menu
+        theme="dark"
         style={{
-          width: 250,
-          minWidth: 250,
           height: '100%',
-        }}  
-      >
-        {/* <div
-          style={{
-            height: 32,
-            margin: 8,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-            // background: 'rgba(255, 255, 255, 0.2)',
-          }}
-        >
-          <Typography style={{
-            color: 'white',
-          }}>
-            {sidebarItem.user}
-          </Typography>
-          <IconButton>
-            <LogoutOutlined 
-              style={{
-                color: 'white',
-                fontSize: 20,
-              }}
-            />
-          </IconButton>
-        </div> */}
-        <Menu
-          theme="light"
-          style={{
-            height: '100%',
-          }}
-          mode="inline"
-          items={sidebarItem.items}
-          defaultOpenKeys={['sub1']}
-          onClick={handleOnClick}
-        />
-      </Layout.Sider>
-    </div>
+        }}
+        mode="inline"
+        items={sidebarItem.items}
+        defaultOpenKeys={['sub1']}
+        onClick={handleOnClick}
+      />
+    </Layout.Sider>
   )
 }
 

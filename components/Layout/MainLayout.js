@@ -63,23 +63,23 @@ const MainLayout = ({ data, children }) => {
     >
       <Layout>
         <Sidebar sidebarItem={sidebarItem} selectedId={selectedKanbanId} handleOnClick={handleOnClick} />
-          <Layout className="content-layout">
-            <Layout.Content
-              style={{
-                margin: 16,
-                height: '100%',
-              }}
-            >
-              {children}
-            </Layout.Content>
-            <Layout.Footer
-              style={{
-                textAlign: 'center',
-              }}
-            >
-              Ant Design ©2018 Created by Ant UED
-            </Layout.Footer>
-          </Layout>
+        <Layout className="content-layout">
+          <Layout.Content
+            style={{
+              margin: 16,
+              height: '100%',
+            }}
+          >
+            {children}
+          </Layout.Content>
+          <Layout.Footer
+            style={{
+              textAlign: 'center',
+            }}
+          >
+            Ant Design ©2018 Created by Ant UED
+          </Layout.Footer>
+        </Layout>
       </Layout>
     </Layout>
   )

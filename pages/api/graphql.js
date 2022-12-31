@@ -26,9 +26,10 @@ const typeDefs = gql`
     createKanban(data: CreateKanbanInput!): Kanban!
     deleteKanban(id: String!): Kanban!
     updateKanban(id: String!, data: UpdateKanbanInput): Kanban!
-    createList(data: CreateListInput!): List!
-    deleteList(id: ID!): List!
-    updateList(id: ID!, data: UpdateListInput): List!
+
+    createList(kanbanId: ID!): List!
+    deleteList(listId: ID!): List!
+    updateList(listId: ID!, data: UpdateListInput!): List!
 
     createCard(listId: ID!): Card!
     deleteCard(cardId: ID!): Card!
@@ -76,7 +77,6 @@ const typeDefs = gql`
   }
 
   input UpdateListInput {
-    parentId: String
     name: String
   }
 
