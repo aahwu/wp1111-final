@@ -29,9 +29,11 @@ const typeDefs = gql`
     createList(data: CreateListInput!): List!
     deleteList(id: ID!): List!
     updateList(id: ID!, data: UpdateListInput): List!
-    createCard(data: CreateCardInput!): Card!
-    deleteCard(id: ID!): Card!
-    updateCard(id: ID!, data: UpdateCardInput): Card!
+
+    createCard(listId: ID!): Card!
+    deleteCard(cardId: ID!): Card!
+    updateCard(cardId: ID!, data: UpdateCardInput!): Card!
+    updateCardPosition(data: UpdateCardPositionInput!): String
   }
 
   # type Subscription {
@@ -53,9 +55,11 @@ const typeDefs = gql`
   }
 
   type Card {
-    _id: ID!
-    parentId: String!
-    body: String!
+    _id: ID
+    parentId: String
+    name: String
+    body: String
+    position: Int
   }
 
   input CreateKanbanInput {
@@ -77,13 +81,20 @@ const typeDefs = gql`
   }
 
   input CreateCardInput {
-    body: String!
+    # body: String!
     listId: String!
   }
 
   input UpdateCardInput {
-    parentId: String
+    name: String
     body: String
+  }
+
+  input UpdateCardPositionInput {
+    sourceListId: ID
+    destinationListId: ID!
+    sourceCardsId: [ID]
+    destinationCardsId: [ID!]!
   }
 
   enum MutationType {

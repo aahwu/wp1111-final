@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import styled from 'styled-components';
-import Kanban from '../../containers/Kanban';
+import Board from '../../containers/Board';
 import Start from '../../containers/Start';
 import React, { useEffect, useState } from 'react';
 import { IconButton, Typography } from '@mui/material'
@@ -38,12 +38,12 @@ const MainPage = () => {
       </Breadcrumb> */}
       <div
         style={{
-          padding: 24,
+          padding: 8,
           height: '100%',
           background: colorBgContainer,
         }}
       >
-        {(false) ? <Start /> : <Kanban />}
+        {(false) ? <Start /> : <Board />}
       </div>
     </>
   );

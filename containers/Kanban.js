@@ -1,30 +1,12 @@
 import DDWrapper from "../components/Common/rbd/DDContextWrapper";
 import { useKanban } from "./hooks/useKanban";
-import { useQuery } from '@apollo/client';
-import React, { useEffect, useState } from 'react';
-import Loading from "../components/Common/Loading";
-import { GET_KANBANS_QUERY, GET_LISTS_QUERY, GET_LISTS_BY_ID_QUERY } from "../graphql/queries";
+import { Box, Button, Typography, Divider, TextField, IconButton, Card } from '@mui/material'
+
 
 const Kanban = () => {
 
   // hook
-  const { lists, setLists, selectedKanbanId, handleDelete } = useKanban();
-  
-  // graphql query
-  const {
-    loading, error, data: listsData, subscribeToMore,
-  } = useQuery(GET_LISTS_BY_ID_QUERY, {
-    variables: {
-      input: selectedKanbanId
-    }
-  });
-
-  useEffect(() => {
-    if(typeof listsData !== 'undefined') {
-      console.log(listsData)
-      setLists(listsData.getListsById);
-    }
-  }, [listsData])
+  const { lists, setLists, selectedKanbanId, updateCardPosition } = useKanban();
 
   // move element from startIndex to endIndex
   const reorder = (listObject, startIndex, endIndex) => {
@@ -41,7 +23,7 @@ const Kanban = () => {
   // move element across list
   const move = (sourceObject, destinationObject, droppableSource, droppableDestination) => {
     const sourceClone = Array.from(sourceObject.cards);
-    const destClone = Array.from(destinationObject.cards);
+    const destClone = (destinationObject.cards) ? Array.from(destinationObject.cards) : [];
     const [removed] = sourceClone.splice(droppableSource.index, 1);
   
     destClone.splice(droppableDestination.index, 0, removed);
@@ -58,7 +40,7 @@ const Kanban = () => {
   };
 
   // onDragEnd function
-  const onDragEnd = (result) => {
+  const onDragEnd = async (result) => {
     const { source, destination } = result;
 
     // dropped outside the list
@@ -70,22 +52,61 @@ const Kanban = () => {
 
     if (sInd === dInd) {
       const items = reorder(lists[sInd], source.index, destination.index);
-      console.log(items)
       const newLists = [...lists];
       newLists[sInd] = items;
-      console.log(newLists)
       setLists(newLists);
+      await updateCardPosition({
+        variables: {
+          data: {
+            destinationListId: lists[dInd]._id,
+            destinationCardsId: items.cards.map((card) => card._id),
+          }
+        }
+      })
     } else {
       const result = move(lists[sInd], lists[dInd], source, destination);
       const newLists = [...lists];
       newLists[sInd] = result[sInd];
       newLists[dInd] = result[dInd];
-
       setLists(newLists);
+      await updateCardPosition({
+        variables: {
+          data: {
+            sourceListId: lists[sInd]._id,
+            destinationListId: lists[dInd]._id,
+            sourceCardsId: result[sInd].cards.map((card) => card._id),
+            destinationCardsId: result[dInd].cards.map((card) => card._id),
+          }
+        }
+      })
+
     }
   }
+
+  const createSection = async () => {
+    try {
+    } catch (err) {
+      alert(err)
+    }
+  }
+
   return (
-    loading ? <Loading /> : <DDWrapper lists={lists} onDragEnd={onDragEnd} handleDelete={handleDelete} />
+    <>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      }}>
+        <Button onClick={createSection}>
+          Add section
+        </Button>
+        <Typography variant='body2' fontWeight='700'>
+          {lists.length} Sections
+        </Typography>
+      </div>
+      <Divider sx={{ margin: '10px 0' }} />
+      <DDWrapper lists={lists} onDragEnd={onDragEnd} />
+    </>
   )
 }
 

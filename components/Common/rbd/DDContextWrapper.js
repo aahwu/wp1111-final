@@ -4,8 +4,7 @@ import { DragDropContext } from "react-beautiful-dnd";
 
 const Wrapper = styled.div`
   display: flex;
-  justify-content: center;
-  align-content: space-between;
+  alignItems: 'flex-start',
 `;
 
 const DDWrapper = ({ onDragEnd, lists, handleDelete }) => {
@@ -13,7 +12,9 @@ const DDWrapper = ({ onDragEnd, lists, handleDelete }) => {
     <Wrapper>
       <DragDropContext onDragEnd={onDragEnd}>
         {lists.map((list, index) => (
-          <DropWrapper list={list} listInd={index} handleDelete={handleDelete} key={list._id} />
+          <div key={list._id} style={{ width: '300px' }}>
+            <DropWrapper list={list} listInd={index} key={list._id} />
+          </div>
         ))}
       </DragDropContext>
     </Wrapper>

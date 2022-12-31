@@ -1,29 +1,20 @@
 import styled from 'styled-components';
 import DeleteButtion from '../DeleteButton'
 import { Draggable } from "react-beautiful-dnd";
+import { Box, Button, Typography, Divider, TextField, IconButton, Card } from '@mui/material'
+import { useKanban } from '../../../containers/hooks/useKanban';
+import { useEffect } from 'react';
 
-const Wrapper = styled.div`
-  
-`;
+const DragWrapper = ({ card, listInd, cardInd }) => {
 
-const grid = 8;
+  const { setModalOpened, setSelectedCard } = useKanban();
 
-const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
-  display: "flex",
-  justifyContent: "space-around",
-  userSelect: "none",
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
+  const handleModal = () => {
+    setSelectedCard(card);
+    setModalOpened(true);
+    console.log(card)
+  }
 
-  // change background colour if dragging
-  background: isDragging ? "lightgreen" : "grey",
-
-  // styles we need to apply on draggables
-  ...draggableStyle
-});
-
-const DragWrapper = ({ card, listInd, cardInd, handleDelete }) => {
   return (
     <Draggable
       key={card._id}
@@ -31,18 +22,21 @@ const DragWrapper = ({ card, listInd, cardInd, handleDelete }) => {
       index={cardInd}
     >
       {(provided, snapshot) => (
-        <div
+        <Card
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          style={getItemStyle(
-            snapshot.isDragging,
-            provided.draggableProps.style
-          )}
+          sx={{
+            padding: '10px',
+            marginBottom: '10px',
+            cursor: snapshot.isDragging ? 'grab' : 'pointer!important'
+          }}
+          onClick={handleModal}
         >
-          {card.body}
-          <DeleteButtion cardInd={cardInd} listInd={listInd} handleDelete={handleDelete} />
-        </div>
+          <Typography>
+            {card.name === '' ? 'Untitled' : card.name}
+          </Typography>
+        </Card>
       )}
     </Draggable>
   )

@@ -5,18 +5,15 @@ const Schema = mongoose.Schema
 const KanbanSchema = new Schema({
   name: {
     type: String, 
-    required: 
-      [true, 'Name field is required.']
+    default: '',
   },
   DroppableList: [{
     type: Schema.Types.ObjectId,
     ref: 'DroppableList'
   }],
-  deleted: {
-    type: Boolean,
-    requires:
-      [true, 'Deletion field is required.']
-  },
+  position: {
+    type: Number
+  }
 });
 // const KanbanModel = mongoose.models.Kanban || mongoose.model('Kanban', KanbanSchema);
 

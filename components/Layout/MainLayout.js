@@ -40,7 +40,8 @@ const MainLayout = ({ data, children }) => {
     if(kanbansData) {
       // console.log(kanbansData.kanbans)
       setKanbans(kanbansData.kanbans);
-      setSelectedKanbanId(kanbansData.kanbans[0]._id)
+      // setSelectedKanbanId(kanbansData.kanbans[0]._id)
+      console.log()
     }
   }, [kanbansData])
 
@@ -60,9 +61,6 @@ const MainLayout = ({ data, children }) => {
         minHeight: '100vh',
       }}
     >
-      <Layout.Header className="header">
-        header
-      </Layout.Header>
       <Layout>
         <Sidebar sidebarItem={sidebarItem} selectedId={selectedKanbanId} handleOnClick={handleOnClick} />
           <Layout className="content-layout">

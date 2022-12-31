@@ -5,8 +5,7 @@ const Schema = mongoose.Schema
 const DroppableListSchema = new Schema({
   name: {
     type: String, 
-    required: 
-      [true, 'Name field is required.']
+    default: '',
   },
   parentId: {
     type: String, 
@@ -17,11 +16,6 @@ const DroppableListSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'DraggableCard'
   }],
-  deleted: {
-    type: Boolean,
-    requires:
-      [true, 'Deletion field is required.']
-  },
 });
 
 export default mongoose.models?.DroppableList || mongoose.model('DroppableList', DroppableListSchema);

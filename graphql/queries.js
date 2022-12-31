@@ -16,6 +16,7 @@ export const GET_LISTS_QUERY = gql`
       name
       cards {
         _id
+        name
         body
       }
     }
@@ -29,7 +30,9 @@ export const GET_LISTS_BY_ID_QUERY = gql`
       name
       cards {
         _id
+        name
         body
+        position
       }
     }
   }

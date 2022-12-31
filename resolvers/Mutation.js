@@ -70,31 +70,34 @@ const Mutation = {
   },
 
   /* Card mutation */
-  createCard: async (parent, { data }, { DroppableListModel, DraggableCardModel }) => {
-    const list = await DroppableListModel.findById(data.listId);
+  createCard: async (parent, { listId }, { DroppableListModel, DraggableCardModel }) => {
+    const list = await DroppableListModel.findById(listId);
 
     if (!list) {
       throw new Error('List not exist');
     }
-
-    const newCard = await new DraggableCardModel({ body: data.body, parentId: data.listId }).save();
+    const cardsCount = await DraggableCardModel.find({ parentId: listId }).count()
+    const newCard = await new DraggableCardModel({ 
+      parentId: listId,
+      position: cardsCount > 0 ? cardsCount : 0,
+    }).save();
     list.DraggableCard.push(newCard);
     await list.save();
 
     return newCard;
   },
-  deleteCard: async (parent, { id }, { DroppableListModel, DraggableCardModel }) => {
-    const card = await DraggableCardModel.findByIdAndRemove(id);
+  deleteCard: async (parent, { cardId }, { DroppableListModel, DraggableCardModel }) => {
+    const card = await DraggableCardModel.findByIdAndRemove(cardId);
 
     if (!card) {
       throw new Error('Card not exist');
     }
-    const list = await DroppableListModel.findByIdAndUpdate(card.parentId, { $pull: { 'DraggableCard': id } });
+    const list = await DroppableListModel.findByIdAndUpdate(card.parentId, { $pull: { 'DraggableCard': cardId } });
 
     return card;
   },
-  updateCard: async (parent, { id, data }, { DraggableCardModel }) => {
-    const card = await DraggableCardModel.findByIdAndUpdate(id, data);
+  updateCard: async (parent, { cardId, data }, { DraggableCardModel }) => {
+    const card = await DraggableCardModel.findByIdAndUpdate(cardId, data, { new: true });
 
     if (!card) {
       throw new Error('Card not exist');
@@ -102,6 +105,27 @@ const Mutation = {
 
     return card;
   },
+  updateCardPosition: async (parent, { data }, { DroppableListModel, DraggableCardModel }) => {
+    if (data.sourceListId) {
+      const sourceList = await DroppableListModel.findByIdAndUpdate(data.sourceListId, { DraggableCard: data.sourceCardsId});
+      const sourceKeys = data.sourseCardsId;
+      for (const key in sourceKeys) {
+        await DraggableCardModel.findByIdAndUpdate(
+          data.sourseCardsId[key], 
+          { position: key, parentId: data.sourceListId }  
+        )
+      }
+    }
+    const destinationList = await DroppableListModel.findByIdAndUpdate(data.destinationListId, { DraggableCard: data.destinationCardsId});
+    const destinationKeys = data.destinationCardsId;
+    for (const key in destinationKeys) {
+      await DraggableCardModel.findByIdAndUpdate(
+        data.destinationCardsId[key], 
+        { position: key, parentId: data.destinationListId }  
+      )
+    }
+    return ;
+  }
   // createMessage: async (parent, { name, to, body }, { pubsub, ChatBoxModel } ) => {
   //   const createChatBoxName = (name, to) => {
   //     return [name, to].sort().join('_');

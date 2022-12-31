@@ -4,7 +4,7 @@ const List  = {
       return;
     }
     const list = await parent.populate("DraggableCard");
-    return list.DraggableCard;
+    return list.DraggableCard.sort((a, b) => a.position - b.position);
   }
 }
 export default List;
