@@ -13,7 +13,7 @@ import {
 } from '@ant-design/icons';
 import { useState } from 'react';
 
-const Sidebar = ({ sidebarItem, selectedId, handleOnClick }) => {
+const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {
   const [collapsed, setCollapsed] = useState(false);
   return (
     <Layout.Sider
@@ -54,6 +54,7 @@ const Sidebar = ({ sidebarItem, selectedId, handleOnClick }) => {
         items={sidebarItem.items}
         defaultOpenKeys={['sub1']}
         onClick={handleOnClick}
+        selectedKeys={selectedKeys}
       />
     </Layout.Sider>
   )

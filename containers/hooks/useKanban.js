@@ -8,15 +8,21 @@ import {
   CREATE_LIST_MUTATION,
   DELETE_LIST_MUTATION,
   UPDATE_LIST_MUTATION,
+  CREATE_KANBAN_MUTATION,
+  DELETE_KANBAN_MUTATION,
+  UPDATE_KANBAN_NAME_MUTATION,
+  UPDATE_KANBAN_DESCRIPTION_MUTATION,
 } from "../../graphql/mutations";
+import { getClient } from "../../lib/getClient";
+
+const client = getClient();
 
 const KanbanContext = createContext({
-  lists: [],
-  kanbans: [],
   selectedKanbanId: '',
+  kanbans: [],
+  lists: [],
   selectedCard: {},
   modalOpened: false,
-  handleDelete: () => {},
 
   // card mutation
   createCard: () => {},
@@ -28,6 +34,12 @@ const KanbanContext = createContext({
   createList: () => {},
   deleteList: () => {},
   updateList: () => {},
+
+  // kanban mutation
+  createKanban: () => {},
+  deleteKanban: () => {},
+  updateKanbanName: () => {},
+  updateKanbanDescription: () => {},
 });
 
 // generate fake array data: [ { id: ..., content: 'item ${ k+offset }}, ... ]
@@ -42,34 +54,11 @@ const getItems = (count, offset = 0) => {
 
 const KanbanProvider = (props) => {
 
-  const [lists, setLists] = useState([]);
-  const [kanbans, setKanbans] = useState([]);
-  const [modalOpened, setModalOpened] = useState(false);
   const [selectedKanbanId, setSelectedKanbanId] = useState('');
+  const [kanbans, setKanbans] = useState([]);
+  const [lists, setLists] = useState([]);
   const [selectedCard, setSelectedCard] = useState({});
-
-  // handleDelete
-  const handleDelete = (listInd, cardInd) => () => {
-    const newLists = [...lists];
-    const listObject = newLists[listInd];
-    const result = Array.from(listObject.cards);
-    console.log(result);
-    result.splice(cardInd, 1);
-
-    const newListObject = {...listObject};
-    newListObject.cards = result;
-    newLists[listInd] = newListObject;
-
-    setLists(
-      newLists
-    );
-  }
-
-  // handle onclick of menu
-  const handleOnClick = ({ key }) => {
-    setSelectedKanbanId(key)
-    console.log(key)
-  }
+  const [modalOpened, setModalOpened] = useState(false);
 
   // card mutation
   const [createCard, { data: newCardData }] = useMutation(CREATE_CARD_MUTATION);
@@ -147,7 +136,7 @@ const KanbanProvider = (props) => {
   useEffect(() => {
     if (newListData) {
       const newList = newListData.createList;
-      const newLists = [...lists, newList];
+      const newLists = lists ? [...lists, newList] : [newList];
       setLists(newLists);
     }
   }, [newListData])
@@ -174,14 +163,29 @@ const KanbanProvider = (props) => {
   //   }
   // }, [updatedListData])
 
+  // kanban mutation
+  const [createKanban, { data: createdKanbanData }] = useMutation(CREATE_KANBAN_MUTATION);
+  const [deleteKanban, { data: deletedKanbanData }] = useMutation(DELETE_KANBAN_MUTATION);
+  const [updateKanbanName, { data: updatedKanbanName }] = useMutation(UPDATE_KANBAN_NAME_MUTATION);
+  const [updateKanbanDescription, { data: updatedKanbanDescription }] = useMutation(UPDATE_KANBAN_DESCRIPTION_MUTATION);
+
+  // useEffect for kanban mutation
+  useEffect(() => {
+    if (createdKanbanData) {
+      const newKanban = createdKanbanData.createKanban;
+      setKanbans([...kanbans, newKanban])
+      setSelectedKanbanId(newKanban._id);
+    }
+  }, [createdKanbanData])
+
   return (
     <KanbanContext.Provider
       value={{
-        lists, kanbans, selectedKanbanId, selectedCard, modalOpened,
-        setLists, setKanbans, setSelectedKanbanId, setSelectedCard, setModalOpened,
-        handleDelete, handleOnClick,
+        selectedKanbanId, kanbans, lists, selectedCard, modalOpened,
+        setSelectedKanbanId, setKanbans, setLists, setSelectedCard, setModalOpened,
         createCard, deleteCard, updateCard, updateCardPosition,
         createList, deleteList, updateList,
+        createKanban, deleteKanban, updateKanbanName, updateKanbanDescription,
       }}
       {...props}
     />

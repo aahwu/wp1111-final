@@ -1,19 +1,30 @@
 const Mutation = {
 
   /* Kanban mutation */
-  createKanban: async (parent, { data }, { KanbanModel }) => {
-    const kanbanTaken = await KanbanModel.findOne({ name: data.name });
+  createKanban: async (parent, args, { KanbanModel }) => {
 
-    if (kanbanTaken) {
-      throw new Error('Kanban taken');
-    }
-
-    const newKanban = await new KanbanModel({ name: data.name, lists: [] }).save();
+    const newKanban = await new KanbanModel().save();
 
     return newKanban;
   },
-  deleteKanban: async (parent, { id }, { KanbanModel }) => {
-    const kanban = await KanbanModel.findByIdAndRemove(id);
+  deleteKanban: async (parent, { kanbanId }, { KanbanModel, DroppableListModel, DraggableCardModel }) => {
+    const kanban = await KanbanModel.findByIdAndRemove(kanbanId);
+
+    if (!kanban) {
+      throw new Error('Kanban not exist');
+    }
+    for (const listId in kanban.DroppableList) {
+      const list = await DroppableListModel.findByIdAndRemove(listId);
+      console.log(list)
+      for (const cardId in list.DraggableCard) {
+        const card = await DraggableCardModel.findByIdAndRemove(cardId);
+        console.log(card)
+      }
+    }
+    return kanban;
+  },
+  updateKanbanName: async (parent, { kanbanId, data }, { KanbanModel }) => {
+    const kanban = await KanbanModel.findByIdAndUpdate(kanbanId, data, { new: true });
 
     if (!kanban) {
       throw new Error('Kanban not exist');
@@ -21,8 +32,8 @@ const Mutation = {
 
     return kanban;
   },
-  updateKanban: async (parent, { id, data }, { KanbanModel }) => {
-    const kanban = await KanbanModel.findByIdAndUpdate(id, data);
+  updateKanbanDescription: async (parent, { kanbanId, data }, { KanbanModel }) => {
+    const kanban = await KanbanModel.findByIdAndUpdate(kanbanId, data, { new: true });
 
     if (!kanban) {
       throw new Error('Kanban not exist');
@@ -49,13 +60,16 @@ const Mutation = {
 
     return newList;
   },
-  deleteList: async (parent, { listId }, { KanbanModel, DroppableListModel }) => {
+  deleteList: async (parent, { listId }, { KanbanModel, DroppableListModel, DraggableCardModel }) => {
     const list = await DroppableListModel.findByIdAndRemove(listId);
 
     if (!list) {
       throw new Error('List not exist');
     }
     const kanban = await KanbanModel.findByIdAndUpdate(list.parentId, { $pull: { 'DroppableList': listId } });
+    for (const cardId in list.DraggableCard) {
+      await DraggableCardModel.findByIdAndRemove(cardId);
+    }
 
     return list;
   },

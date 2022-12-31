@@ -10,12 +10,14 @@ import {
   UserOutlined,
   DatabaseOutlined,
   AppstoreOutlined,
+  PlusCircleOutlined,
   HeartOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
 import { useQuery } from '@apollo/client';
 import { GET_KANBANS_QUERY, GET_LISTS_QUERY } from "../../graphql/queries";
 import { getClient } from '../../lib/getClient'
+
 function getItem(label, key, icon, children) {
   return {
     key,
@@ -34,24 +36,33 @@ const MainLayout = ({ data, children }) => {
   } = useQuery(GET_KANBANS_QUERY);
 
   // hook
-  const { kanbans, setKanbans, selectedKanbanId, setSelectedKanbanId, handleOnClick } = useKanban();
-  // const { kanbans, setKanbans, handleDelete } = useKanban();
+  const { kanbans, setKanbans, selectedKanbanId, setSelectedKanbanId, createKanban } = useKanban();
+
   useEffect(() => {
     if(kanbansData) {
-      // console.log(kanbansData.kanbans)
       setKanbans(kanbansData.kanbans);
-      // setSelectedKanbanId(kanbansData.kanbans[0]._id)
-      console.log()
     }
   }, [kanbansData])
+
+  // handle onclick of menu
+  const handleOnClick = async ({ key }) => {
+    if (key === 'addKanban') {
+      await createKanban();
+    } else {
+      setSelectedKanbanId(key);
+    }
+  }
 
   const sidebarItem = {
     user: 'inarro',
     items: [
+      getItem('Add Kanban', 'addKanban', <PlusCircleOutlined />),
       getItem('Kanban', 'sub1', <AppstoreOutlined />, 
-      kanbans.map((kanban) => ({key: kanban._id, label: kanban.name}))
+      kanbans.map((kanban) => ({
+        key: kanban._id,
+        label: (kanban.name) ? kanban.name : 'Untitled'
+      }))
       ),
-      getItem('Favorite', 'sub2', <HeartOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
     ] 
   };
 
@@ -62,7 +73,11 @@ const MainLayout = ({ data, children }) => {
       }}
     >
       <Layout>
-        <Sidebar sidebarItem={sidebarItem} selectedId={selectedKanbanId} handleOnClick={handleOnClick} />
+        <Sidebar
+          sidebarItem={sidebarItem}
+          handleOnClick={handleOnClick} 
+          selectedKeys={[selectedKanbanId]}  
+        />
         <Layout className="content-layout">
           <Layout.Content
             style={{

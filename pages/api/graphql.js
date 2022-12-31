@@ -23,9 +23,10 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createKanban(data: CreateKanbanInput!): Kanban!
-    deleteKanban(id: String!): Kanban!
-    updateKanban(id: String!, data: UpdateKanbanInput): Kanban!
+    createKanban: Kanban!
+    deleteKanban(kanbanId: ID!): Kanban!
+    updateKanbanName(kanbanId: ID!, data: UpdateKanbanNameInput!): Kanban!
+    updateKanbanDescription(kanbanId: ID!, data: UpdateKanbanDescriptionInput!): Kanban!
 
     createList(kanbanId: ID!): List!
     deleteList(listId: ID!): List!
@@ -42,19 +43,19 @@ const typeDefs = gql`
   #   list(kanbanId: ID!): ListSubscriptionPayload!
   # }
 
+  # Type
   type Kanban {
     _id: ID!
-    name: String!
+    name: String
+    description: String
     lists: [List!]
   }
-
   type List {
     _id: ID!
     parentId: String!
     name: String!
     cards: [Card!]
   }
-
   type Card {
     _id: ID
     parentId: String
@@ -63,33 +64,23 @@ const typeDefs = gql`
     position: Int
   }
 
-  input CreateKanbanInput {
+  # Input
+  input UpdateKanbanNameInput {
     name: String!
   }
-
-  input UpdateKanbanInput {
-    name: String!
+  input UpdateKanbanDescriptionInput {
+    description: String!
   }
-
-  input CreateListInput {
-    name: String!
-    kanbanId: String!
-  }
-
   input UpdateListInput {
     name: String
   }
-
   input CreateCardInput {
-    # body: String!
     listId: String!
   }
-
   input UpdateCardInput {
     name: String
     body: String
   }
-
   input UpdateCardPositionInput {
     sourceListId: ID
     destinationListId: ID!

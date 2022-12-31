@@ -107,11 +107,11 @@ const Kanban = () => {
           Add list
         </Button>
         <Typography variant='body2' fontWeight='700' color='black'>
-          {lists.length} Lists
+          {lists ? lists.length : 0} Lists
         </Typography>
       </div>
       <Divider sx={{ margin: '10px 0', flex: 0 }} />
-      <DDWrapper lists={lists} onDragEnd={onDragEnd} />
+      {lists ? <DDWrapper lists={lists} onDragEnd={onDragEnd} /> : <p>create a list first</p>}
     </>
   )
 }

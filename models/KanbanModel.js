@@ -7,13 +7,17 @@ const KanbanSchema = new Schema({
     type: String, 
     default: '',
   },
+  description: {
+    type: String,
+    default: '',
+  },
   DroppableList: [{
     type: Schema.Types.ObjectId,
     ref: 'DroppableList'
   }],
-  position: {
-    type: Number
-  }
+  // position: {
+  //   type: Number
+  // }
 });
 // const KanbanModel = mongoose.models.Kanban || mongoose.model('Kanban', KanbanSchema);
 

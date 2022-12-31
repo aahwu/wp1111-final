@@ -9,8 +9,7 @@ import { useState } from 'react';
 
 const DropWrapper = ({ list, listInd, handleDelete }) => {
 
-  const { lists, setLists, setModalOpened, createCard, deleteList, updateList } = useKanban(); 
-  const [localList, setLocalList] = useState(list);
+  const { lists, setLists, setModalOpened, createCard, deleteList, updateList } = useKanban();
 
   const handleCreateCard = async () => {
     try {
@@ -33,8 +32,8 @@ const DropWrapper = ({ list, listInd, handleDelete }) => {
   }
 
   const handleUpdateList = async (e) => {
+    const newName = e.target.value;
     try {
-      const newName = e.target.value;
       const newLists = [...lists];
       const index = newLists.findIndex((listObject) => listObject._id === list._id);
       const newList = {...newLists[index]}

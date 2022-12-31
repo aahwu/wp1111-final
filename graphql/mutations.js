@@ -1,5 +1,42 @@
 import { gql } from '@apollo/client';
 
+// kanban mutation
+export const CREATE_KANBAN_MUTATION = gql`
+  mutation CreateKanban {
+    createKanban {
+      _id
+      name
+      description
+    }
+  }
+`;
+
+export const DELETE_KANBAN_MUTATION = gql`
+  mutation DeleteKanban($kanbanId: ID!) {
+    deleteKanban(kanbanId: $kanbanId) {
+      _id
+    }
+  }
+`;
+
+export const UPDATE_KANBAN_NAME_MUTATION = gql`
+  mutation UpdateKanbanName($kanbanId: ID!, $newData: UpdateKanbanNameInput!) {
+    updateKanbanName(kanbanId: $kanbanId, data: $newData) {
+      _id
+      name
+    }
+  }
+`
+
+export const UPDATE_KANBAN_DESCRIPTION_MUTATION = gql`
+  mutation UpdateKanbanDescription($kanbanId: ID!, $newData: UpdateKanbanDescriptionInput!) {
+    updateKanbanDescription(kanbanId: $kanbanId, data: $newData) {
+      _id
+      description
+    }
+  }
+`
+
 // list mutation
 export const CREATE_LIST_MUTATION = gql`
   mutation CreateList($kanbanId: ID!) {
