@@ -121,7 +121,6 @@ const Board = () => {
 
   return (
     loading ? <Loading /> : 
-      selectedKanbanId === '' ? <p>nothing</p> :
       <div
         style={{
           display: 'flex',

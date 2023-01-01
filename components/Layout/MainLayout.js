@@ -46,6 +46,7 @@ const MainLayout = ({ data, children }) => {
 
   // handle onclick of menu
   const handleOnClick = async ({ key }) => {
+    console.log("click trigger")
     if (key === 'addKanban') {
       await createKanban();
     } else {
@@ -92,7 +93,7 @@ const MainLayout = ({ data, children }) => {
               textAlign: 'center',
             }}
           >
-            Ant Design ©2018 Created by Ant UED
+            Inarro ©2022 Created by aahwu
           </Layout.Footer>
         </Layout>
       </Layout>

@@ -12,15 +12,12 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons';
 import { useState } from 'react';
+import { useKanban } from '../../containers/hooks/useKanban';
 
 const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {
-  const [collapsed, setCollapsed] = useState(false);
+
   return (
-    <Layout.Sider
-      collapsible
-      collapsed={collapsed}
-      onCollapse={(value) => setCollapsed(value)}
-    >
+    <Layout.Sider>
       <div
         style={{
           height: 32,
@@ -36,7 +33,8 @@ const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {
         }}>
           {sidebarItem.user}
         </Typography>
-        <IconButton>
+        <IconButton
+        >
           <LogoutOutlined 
             style={{
               color: 'white',
