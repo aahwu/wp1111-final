@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 
 const CardModal = () => {
 
-  const { modalOpened , setModalOpened, selectedCard, deleteCard, updateCard } = useKanban();
+  const { lists, setLists, modalOpened , setModalOpened, selectedCard, deleteCard, updateCard } = useKanban();
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('');
 
@@ -34,8 +34,21 @@ const CardModal = () => {
 
   const handleUpdateCard = async () => {
     try {
-      console.log(selectedCard._id)
-      console.log(title)
+      const newLists = [...lists];
+      const listInd = newLists.findIndex((listObject) => listObject._id === selectedCard.parentId);
+      const listObject = newLists[listInd];
+      const result = Array.from(listObject.cards);
+      const cardInd = result.findIndex((cardObject) => cardObject._id === selectedCard._id);
+      const cardObject = {...selectedCard, name: title, body: description};
+      result[cardInd] = cardObject;
+
+      const newListObject = {...listObject};
+      newListObject.cards = result;
+      newLists[listInd] = newListObject;
+
+      setLists(
+        [...newLists]
+      );
       await updateCard({
         variables: {
           cardId: selectedCard._id,
@@ -55,7 +68,20 @@ const CardModal = () => {
 
   const handleDeleteCard = async () => {
     try {
-      console.log(selectedCard._id)
+      // const deletedCard = deletedCardData.deleteCard;
+      const newLists = [...lists];
+      const listInd = newLists.findIndex((listObject) => listObject._id === selectedCard.parentId);
+      const listObject = newLists[listInd];
+      let result = Array.from(listObject.cards);
+      result = result.filter((cardObject) => cardObject._id !== selectedCard._id);
+
+      const newListObject = {...listObject};
+      newListObject.cards = result;
+      newLists[listInd] = newListObject;
+
+      setLists(
+        [...newLists]
+      );
       await deleteCard({
         variables: { cardId: selectedCard._id }
       })

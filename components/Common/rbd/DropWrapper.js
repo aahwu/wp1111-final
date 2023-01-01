@@ -23,6 +23,9 @@ const DropWrapper = ({ list, listInd, handleDelete }) => {
 
   const handleDeleteList = async () => {
     try {
+      let newLists = [...lists];
+      newLists = newLists.filter((listObject) => listObject._id !== list._id);
+      setLists([...newLists]);
       await deleteList({
         variables: { listId: list._id }
       })

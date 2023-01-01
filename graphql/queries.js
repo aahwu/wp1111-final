@@ -34,6 +34,7 @@ export const GET_LISTS_BY_ID_QUERY = gql`
         name
         body
         position
+        parentId
       }
     }
   }

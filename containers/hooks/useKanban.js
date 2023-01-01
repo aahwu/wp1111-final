@@ -86,46 +86,46 @@ const KanbanProvider = (props) => {
     }
   }, [newCardData]);
 
-  useEffect(() => {
-    if (deletedCardData) {
-      const deletedCard = deletedCardData.deleteCard;
-      const newLists = [...lists];
-      const listInd = newLists.findIndex((listObject) => listObject._id === deletedCard.parentId);
-      const listObject = newLists[listInd];
-      let result = Array.from(listObject.cards);
-      result = result.filter((cardObject) => cardObject._id !== deletedCard._id);
+  // useEffect(() => {
+  //   if (deletedCardData) {
+  //     const deletedCard = deletedCardData.deleteCard;
+  //     const newLists = [...lists];
+  //     const listInd = newLists.findIndex((listObject) => listObject._id === deletedCard.parentId);
+  //     const listObject = newLists[listInd];
+  //     let result = Array.from(listObject.cards);
+  //     result = result.filter((cardObject) => cardObject._id !== deletedCard._id);
 
-      const newListObject = {...listObject};
-      newListObject.cards = result;
-      newLists[listInd] = newListObject;
+  //     const newListObject = {...listObject};
+  //     newListObject.cards = result;
+  //     newLists[listInd] = newListObject;
 
-      setLists(
-        [...newLists]
-      );
-    }
-  }, [deletedCardData])
+  //     setLists(
+  //       [...newLists]
+  //     );
+  //   }
+  // }, [deletedCardData])
 
-  useEffect(() => {
-    if (updatedCardData) {
-      const updatedCard = updatedCardData.updateCard;
-      const newLists = [...lists];
-      const listInd = newLists.findIndex((listObject) => listObject._id === updatedCard.parentId);
-      const listObject = newLists[listInd];
-      const result = Array.from(listObject.cards);
-      const cardInd = result.findIndex((cardObject) => cardObject._id === updatedCard._id);
-      const cardObject = {...result[cardInd], name: updatedCard.name, body: updatedCard.body};
-      result[cardInd] = cardObject;
+  // useEffect(() => {
+  //   if (updatedCardData) {
+  //     const updatedCard = updatedCardData.updateCard;
+  //     const newLists = [...lists];
+  //     const listInd = newLists.findIndex((listObject) => listObject._id === updatedCard.parentId);
+  //     const listObject = newLists[listInd];
+  //     const result = Array.from(listObject.cards);
+  //     const cardInd = result.findIndex((cardObject) => cardObject._id === updatedCard._id);
+  //     const cardObject = {...result[cardInd], name: updatedCard.name, body: updatedCard.body};
+  //     result[cardInd] = cardObject;
 
-      const newListObject = {...listObject};
-      newListObject.cards = result;
-      newLists[listInd] = newListObject;
+  //     const newListObject = {...listObject};
+  //     newListObject.cards = result;
+  //     newLists[listInd] = newListObject;
 
-      setLists(
-        [...newLists]
-      );
+  //     setLists(
+  //       [...newLists]
+  //     );
 
-    }
-  }, [updatedCardData])
+  //   }
+  // }, [updatedCardData])
 
   // list mutation
   const [createList, { data: newListData }] = useMutation(CREATE_LIST_MUTATION);
@@ -141,14 +141,14 @@ const KanbanProvider = (props) => {
     }
   }, [newListData])
 
-  useEffect(() => {
-    if (deletedListData) {
-      const deletedList = deletedListData.deleteList;
-      let newLists = [...lists];
-      newLists = newLists.filter((listObject) => listObject._id !== deletedList._id);
-      setLists(newLists);
-    }
-  }, [deletedListData])
+  // useEffect(() => {
+  //   if (deletedListData) {
+  //     const deletedList = deletedListData.deleteList;
+  //     let newLists = [...lists];
+  //     newLists = newLists.filter((listObject) => listObject._id !== deletedList._id);
+  //     setLists(newLists);
+  //   }
+  // }, [deletedListData])
 
   // useEffect(() => {
   //   if (updatedListData) {
