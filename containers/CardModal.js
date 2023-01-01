@@ -49,6 +49,9 @@ const CardModal = () => {
       setLists(
         [...newLists]
       );
+      setTitle('');
+      setDescription('');
+      setModalOpened(false);
       await updateCard({
         variables: {
           cardId: selectedCard._id,
@@ -58,9 +61,6 @@ const CardModal = () => {
           }
         }
       })
-      setTitle('');
-      setDescription('');
-      setModalOpened(false);
     } catch (err) {
       alert(err)
     }
@@ -82,10 +82,10 @@ const CardModal = () => {
       setLists(
         [...newLists]
       );
+      setModalOpened(false)
       await deleteCard({
         variables: { cardId: selectedCard._id }
       })
-      setModalOpened(false)
     } catch (err) {
       alert(err)
     }
