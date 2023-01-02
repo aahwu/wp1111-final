@@ -17,6 +17,7 @@ import {
 import { useQuery } from '@apollo/client';
 import { GET_KANBANS_QUERY, GET_LISTS_QUERY } from "../../graphql/queries";
 import { getClient } from '../../lib/getClient'
+import { useRouter } from 'next/router'
 
 function getItem(label, key, icon, children) {
   return {
@@ -29,12 +30,21 @@ function getItem(label, key, icon, children) {
 
 const MainLayout = ({ data, children }) => {
   // console.log(data)
-  const {
-    loading, error, data: kanbansData, subscribeToMore,
-  } = useQuery(GET_KANBANS_QUERY);
 
   // hook
-  const { kanbans, setKanbans, selectedKanbanId, setSelectedKanbanId, createKanban } = useKanban();
+  const { token, kanbans, setKanbans, selectedKanbanId, setSelectedKanbanId, createKanban } = useKanban();
+  const router = useRouter();
+
+  const {
+    loading, error, data: kanbansData, subscribeToMore,
+  } = useQuery(GET_KANBANS_QUERY, {
+      context: {
+        headers: {
+          authorization: token,
+        }
+      },
+    }
+  );
 
   useEffect(() => {
     if(kanbansData) {
@@ -47,12 +57,13 @@ const MainLayout = ({ data, children }) => {
     if (key === 'addKanban') {
       await createKanban();
     } else {
+      router.push(`/kanban/${key}`)
       setSelectedKanbanId(key);
     }
   }
 
   const sidebarItem = {
-    user: 'inarro',
+    defaultUser: 'Unknown',
     items: [
       getItem('Add Kanban', 'addKanban', <PlusCircleOutlined />),
       getItem('Kanban', 'sub1', <AppstoreOutlined />, 

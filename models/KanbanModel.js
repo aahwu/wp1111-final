@@ -11,13 +11,19 @@ const KanbanSchema = new Schema({
     type: String,
     default: '',
   },
+  parentId: {
+    type: String, 
+    required: 
+      [true, 'ParentId field is required.']
+  },
   DroppableList: [{
     type: Schema.Types.ObjectId,
     ref: 'DroppableList'
   }],
-  // position: {
-  //   type: Number
-  // }
+  favourite: {
+    type: Boolean,
+    default: false
+  },
 });
 // const KanbanModel = mongoose.models.Kanban || mongoose.model('Kanban', KanbanSchema);
 

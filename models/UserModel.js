@@ -13,7 +13,7 @@ const UserSchema = new Schema({
     required: 
       [true, 'Password field is required.']
   },
-  KanbanList: [{
+  Kanban: [{
     type: Schema.Types.ObjectId,
     ref: 'Kanban'
   }],

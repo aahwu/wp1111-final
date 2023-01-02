@@ -20,6 +20,7 @@
     "@next/font": "13.1.1",
     "antd": "^5.1.1",
     "apollo-link-http": "^1.5.17",
+    "apollo-server": "^3.11.1",
     "apollo-server-micro": "^3.11.1",
     "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",

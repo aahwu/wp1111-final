@@ -9,11 +9,23 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined'
 import StarOutlinedIcon from '@mui/icons-material/StarOutlined'
 import CardModal from "./CardModal";
+import { useRouter } from 'next/router'
 
 const Board = () => {
+  
+  // router
+  const router = useRouter();
+  const { kanbanid } = router.query;
+
+  // useEffect(() => {
+  //   if (router.isReady && kanbanid) {
+  //     setSelectedKanbanId(kanbanid);
+  //   }
+  // }, [router.isReady])
 
   // hook
   const {
+    token,
     selectedKanbanId,
     kanbans,
     setKanbans,
@@ -45,7 +57,7 @@ const Board = () => {
     fetchPolicy: 'cache-and-network',
     context: {
       headers: {
-        authorization: "testToken",
+        authorization: token,
       }
     },
   });
@@ -72,6 +84,7 @@ const Board = () => {
           kanbanId: selectedKanbanId,
         }
       });
+      router.push('/kanban')
       setSelectedKanbanId('');
     } catch (err) {
       alert(err)

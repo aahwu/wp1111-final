@@ -182,16 +182,18 @@ const KanbanProvider = (props) => {
   // }, [updatedListData])
 
   // kanban mutation
-  const [createKanban, { data: createdKanbanData }] = useMutation(CREATE_KANBAN_MUTATION);
-  const [deleteKanban, { data: deletedKanbanData }] = useMutation(DELETE_KANBAN_MUTATION);
-  const [updateKanbanName, { data: updatedKanbanName }] = useMutation(UPDATE_KANBAN_NAME_MUTATION);
-  const [updateKanbanDescription, { data: updatedKanbanDescription }] = useMutation(UPDATE_KANBAN_DESCRIPTION_MUTATION);
+  const [createKanban, { data: createdKanbanData }] = useMutation(CREATE_KANBAN_MUTATION, { context: { headers: { authorization: token } } });
+  const [deleteKanban, { data: deletedKanbanData }] = useMutation(DELETE_KANBAN_MUTATION, { context: { headers: { authorization: token } } });
+  const [updateKanbanName, { data: updatedKanbanName }] = useMutation(UPDATE_KANBAN_NAME_MUTATION, { context: { headers: { authorization: token } } });
+  const [updateKanbanDescription, { data: updatedKanbanDescription }] = useMutation(UPDATE_KANBAN_DESCRIPTION_MUTATION, { context: { headers: { authorization: token } } });
 
   // useEffect for kanban mutation
   useEffect(() => {
     if (createdKanbanData) {
       const newKanban = createdKanbanData.createKanban;
-      setKanbans([...kanbans, newKanban])
+      const newKanbans = kanbans ? [...kanbans, newKanban] : [newKanban];
+      setKanbans(newKanbans)
+      router.push(`/kanban/${newKanban._id}`)
       setSelectedKanbanId(newKanban._id);
     }
   }, [createdKanbanData])
@@ -227,6 +229,8 @@ const KanbanProvider = (props) => {
       const payload = loggedinUser.payload;
       if (payload === 'SUCCESS') {
         setToken(loggedinUser.token);
+        setUsername(loggedinUser.user.name);
+        setLogin(true);
         router.push('/kanban')
         displayStatus({
           type: payload,
@@ -240,14 +244,6 @@ const KanbanProvider = (props) => {
       }
     }
   }, [loggedinUserData])
-
-  // router for kanban
-  useEffect(() => {
-    if (selectedKanbanId) {
-      router.push(`/kanban/${selectedKanbanId}`)
-      console.log(selectedKanbanId)
-    }
-  }, [selectedKanbanId])
 
   const displayStatus = (s) => {
     if (s.msg) {

@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { AuthenticationError } = require('apollo-server');
 
 const Mutation = {
 
@@ -10,7 +11,6 @@ const Mutation = {
       return { user: userExist, payload: 'FAIL' };
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(hashedPassword)
     const newUser = await new UserModel({ name: username, password: hashedPassword}).save();
 
     return { user: newUser, payload: 'SUCCESS'};
@@ -19,17 +19,13 @@ const Mutation = {
   login: async (parent, { username, password }, { UserModel }) => {
     const userExist = await UserModel.findOne({ name: username });
     if (!userExist) {
-      console.log("fail")
       return { payload: "FAIL", errorMsg: "User don\'t exist."}
     }
     const passwordValid = await bcrypt.compare(password, userExist.password);
     if (!passwordValid) {
-      console.log("fail")
       return { payload: "FAIL", errorMsg: "Wrong password."}
     }
-    console.log("success")
-    const newToken = jwt.sign({ id: userExist._id, name: userExist.name }, 'inari', {expiresIn: '1d'});
-    console.log(newToken)
+    const newToken = jwt.sign({ id: userExist._id, name: userExist.name }, 'inari', {expiresIn: '10d'});
     return { 
       user: userExist, 
       payload: 'SUCCESS', 
@@ -38,18 +34,28 @@ const Mutation = {
   },
 
   /* Kanban mutation */
-  createKanban: async (parent, args, { KanbanModel }) => {
+  createKanban: async (parent, args, { KanbanModel, UserModel, me }) => {
+    if (!me) {
+      throw new AuthenticationError("Please log in again.");
+    }
+    const user = await UserModel.findById(me.id);
+    const newKanban = await new KanbanModel({ parentId: me.id }).save();
+    user.Kanban.push(newKanban);
 
-    const newKanban = await new KanbanModel().save();
+    await user.save();
 
     return newKanban;
   },
-  deleteKanban: async (parent, { kanbanId }, { KanbanModel, DroppableListModel, DraggableCardModel }) => {
+  deleteKanban: async (parent, { kanbanId }, { UserModel, KanbanModel, DroppableListModel, DraggableCardModel, me }) => {
+    if (!me) {
+      throw new AuthenticationError("Please log in again.");
+    }
     const kanban = await KanbanModel.findByIdAndRemove(kanbanId);
 
     if (!kanban) {
       throw new Error('Kanban not exist');
     }
+    const user = await UserModel.findByIdAndUpdate(kanban.parentId, { $pull: { 'Kanban': kanbanId } });
     for (const listId of kanban.DroppableList) {
       const list = await DroppableListModel.findByIdAndRemove(listId);
       for (const cardId of list.DraggableCard) {

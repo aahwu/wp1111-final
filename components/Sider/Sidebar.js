@@ -11,14 +11,14 @@ import {
   HeartOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
-import { useState } from 'react';
+import { use, useState } from 'react';
 import { useKanban } from '../hooks/useKanban';
 import { useRouter } from 'next/router';
 
 const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {
 
   const router = useRouter();
-  const { setLogin } = useKanban();
+  const { username, setLogin, setToken } = useKanban();
 
   return (
     <Layout.Sider>
@@ -35,11 +35,12 @@ const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {
         <Typography style={{
           color: 'white',
         }}>
-          {sidebarItem.user}
+          {username ? username : sidebarItem.defaultUser}
         </Typography>
         <IconButton
           onClick={() => {
             setLogin(false);
+            setToken('');
             router.push('/auth/login')
           }}
         >

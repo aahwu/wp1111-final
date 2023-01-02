@@ -17,7 +17,6 @@ const LogInForm = () => {
   const [form] = Form.useForm();
 
   const onFinish = async (values) => {
-    console.log('Received values of form: ', values);
     setLoading(true);
     await loginUser({
       variables: {

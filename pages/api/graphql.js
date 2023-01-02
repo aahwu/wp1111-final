@@ -15,6 +15,8 @@ import { resolve } from 'path';
 import { readFileSync } from 'fs';
 import getConfig from 'next/config';
 
+const jwt = require('jsonwebtoken')
+
 const typeDefs = gql`
   type Query {
     kanbans: [Kanban!]
@@ -63,15 +65,16 @@ const typeDefs = gql`
     name: String!
   }
   type Kanban {
-    _id: ID!
+    _id: ID
     name: String
     description: String
+    favorite: Boolean
     lists: [List!]
   }
   type List {
-    _id: ID!
-    parentId: String!
-    name: String!
+    _id: ID
+    parentId: String
+    name: String
     cards: [Card!]
   }
   type Card {
@@ -152,16 +155,18 @@ const apolloServer = new ApolloServer({
   },
   context: async ({ req }) => {
     const token = req.headers.authorization;
-    const secret = "secret";//process.env.SECRET;
-    const context = { KanbanModel, DroppableListModel, DraggableCardModel, UserModel, secret };
-    // if (token) {
-    //   try {
-    //     const me = await jwt.verify(token, SECRET);
-    //     return { ...context, me };
-    //   } catch (e) {
-    //     throw new Error('Your session expired. Sign in again.');
-    //   }
-    // }
+    const SECRET = "inari";//process.env.SECRET;
+    const context = { KanbanModel, DroppableListModel, DraggableCardModel, UserModel, SECRET };
+    if (token) {
+      console.log(token);
+      try {
+        const me = await jwt.verify(token.replace('Bearer ', ''), SECRET);
+        console.log(me)
+        return { ...context, me };
+      } catch (e) {
+        throw new Error('Your session expired. Sign in again.');
+      }
+    }
     return context;
   },
   introspection: true,

@@ -1,16 +1,17 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
+const { AuthenticationError } = require('apollo-server');
 
 
 const Query = {
   
-  kanbans: async (parent, args, { KanbanModel }) => {
-    // if (!query) {
-    //   return KanbanModel.find({});
-    // }
-    const kanban = await KanbanModel.find({});
-    return kanban;
+  kanbans: async (parent, args, { KanbanModel, UserModel, me }) => {
+    if (!me) {
+      throw new AuthenticationError("Please log in again.");
+    }
+    const user = await UserModel.findById(me.id)
+    await user.populate("Kanban");
+    return user.Kanban;
   },
   lists: async (parent, { query }, { KanbanModel }) => {
     const kanban = await KanbanModel.findOne({ name: query });

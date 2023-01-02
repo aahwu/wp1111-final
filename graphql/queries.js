@@ -6,6 +6,7 @@ export const GET_KANBANS_QUERY = gql`
       _id
       name
       description
+      favorite
     }
   }
 `;
