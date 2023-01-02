@@ -112,7 +112,7 @@ const Board = () => {
     const newKanban = {...newKanbans[index]}
     newKanban.name = newName;
     newKanbans[index] = newKanban;
-    setKanbans([...newKanbans])
+    // setKanbans([...newKanbans])
     try {
       await updateKanbanName({
         variables: {
