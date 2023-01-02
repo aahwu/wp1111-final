@@ -34,7 +34,6 @@ const KanbanContext = createContext({
   selectedCard: {},
   modalOpened: false,
   login: false,
-  loadKanbans: false,
 
   // card mutation
   createCard: () => {},
@@ -81,7 +80,6 @@ const KanbanProvider = (props) => {
   const [selectedCard, setSelectedCard] = useState({});
   const [modalOpened, setModalOpened] = useState(false);
   const [login, setLogin] = useState(false);
-  const [loadKanbans, setLoadKanbans] = useState(false);
   const router = useRouter()
 
 
@@ -111,47 +109,6 @@ const KanbanProvider = (props) => {
     }
   }, [newCardData]);
 
-  // useEffect(() => {
-  //   if (deletedCardData) {
-  //     const deletedCard = deletedCardData.deleteCard;
-  //     const newLists = [...lists];
-  //     const listInd = newLists.findIndex((listObject) => listObject._id === deletedCard.parentId);
-  //     const listObject = newLists[listInd];
-  //     let result = Array.from(listObject.cards);
-  //     result = result.filter((cardObject) => cardObject._id !== deletedCard._id);
-
-  //     const newListObject = {...listObject};
-  //     newListObject.cards = result;
-  //     newLists[listInd] = newListObject;
-
-  //     setLists(
-  //       [...newLists]
-  //     );
-  //   }
-  // }, [deletedCardData])
-
-  // useEffect(() => {
-  //   if (updatedCardData) {
-  //     const updatedCard = updatedCardData.updateCard;
-  //     const newLists = [...lists];
-  //     const listInd = newLists.findIndex((listObject) => listObject._id === updatedCard.parentId);
-  //     const listObject = newLists[listInd];
-  //     const result = Array.from(listObject.cards);
-  //     const cardInd = result.findIndex((cardObject) => cardObject._id === updatedCard._id);
-  //     const cardObject = {...result[cardInd], name: updatedCard.name, body: updatedCard.body};
-  //     result[cardInd] = cardObject;
-
-  //     const newListObject = {...listObject};
-  //     newListObject.cards = result;
-  //     newLists[listInd] = newListObject;
-
-  //     setLists(
-  //       [...newLists]
-  //     );
-
-  //   }
-  // }, [updatedCardData])
-
   // list mutation
   const [createList, { data: newListData }] = useMutation(CREATE_LIST_MUTATION);
   const [deleteList, { data: deletedListData }] = useMutation(DELETE_LIST_MUTATION);
@@ -166,28 +123,6 @@ const KanbanProvider = (props) => {
     }
   }, [newListData])
 
-  // useEffect(() => {
-  //   if (deletedListData) {
-  //     const deletedList = deletedListData.deleteList;
-  //     let newLists = [...lists];
-  //     newLists = newLists.filter((listObject) => listObject._id !== deletedList._id);
-  //     setLists(newLists);
-  //   }
-  // }, [deletedListData])
-
-  // useEffect(() => {
-  //   if (updatedListData) {
-  //     const updatedList = updatedListData.updateList;
-  //     const newLists = [...lists];
-  //     const index = newLists.findIndex((listObject) => listObject._id === updatedList._id);
-  //     const newList = {...newLists[index]}
-  //     newList.name = updatedList.name;
-  //     newLists[index] = newList;
-  //     console.log(newLists)
-  //     setLists([...newLists])
-  //   }
-  // }, [updatedListData])
-
   // kanban mutation
   const [createKanban, { data: createdKanbanData }] = useMutation(CREATE_KANBAN_MUTATION, { context: { headers: { authorization: token } } });
   const [deleteKanban, { data: deletedKanbanData }] = useMutation(DELETE_KANBAN_MUTATION, { context: { headers: { authorization: token } } });
@@ -195,14 +130,6 @@ const KanbanProvider = (props) => {
   const [updateKanbanDescription, { data: updatedKanbanDescription }] = useMutation(UPDATE_KANBAN_DESCRIPTION_MUTATION, { context: { headers: { authorization: token } } });
   const [updateKanbanFavorite, { data: updatedKanbanFavorite }] = useMutation(UPDATE_KANBAN_FAVORITE_MUTATION, { context: { headers: { authorization: token } } });
   const [queryKanbans, { data: kanbansData }] = useLazyQuery(GET_KANBANS_QUERY, { context: { headers: { authorization: token } } });
-
-  useEffect(() => {
-    if(kanbansData && !loadKanbans) {
-      console.log("set kanban")
-      setKanbans(kanbansData.kanbans);
-      setLoadKanbans(true);
-    }
-  }, [kanbansData])
 
   // useEffect for kanban mutation
   useEffect(() => {
@@ -243,11 +170,13 @@ const KanbanProvider = (props) => {
   useEffect(() => {
     if (loggedinUserData) {
       const loggedinUser = loggedinUserData.login;
+      console.log(loggedinUser)
       const payload = loggedinUser.payload;
       if (payload === 'SUCCESS') {
         setToken(loggedinUser.token);
         setUsername(loggedinUser.user.name);
         setLogin(true);
+        setKanbans(loggedinUser.kanbans);
         router.push('/kanban')
         displayStatus({
           type: payload,

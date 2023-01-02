@@ -26,10 +26,12 @@ const Mutation = {
       return { payload: "FAIL", errorMsg: "Wrong password."}
     }
     const newToken = jwt.sign({ id: userExist._id, name: userExist.name }, 'inari', {expiresIn: '10d'});
+    await userExist.populate("Kanban");
     return { 
       user: userExist, 
       payload: 'SUCCESS', 
-      token: newToken
+      token: newToken,
+      kanbans: userExist.Kanban,
     }
   },
 

@@ -60,6 +60,7 @@ const typeDefs = gql`
     token: String
     payload: PayloadType!
     errorMsg: String
+    kanbans: [Kanban]
   }
   type User {
     _id: ID!

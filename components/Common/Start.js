@@ -13,17 +13,6 @@ const Start = ({ noKanban }) => {
     await createKanban();
     setLoading(false);
   }
-  
-  useEffect(() => {
-    if (login) {
-      console.log("query kanban")
-      queryKanbans({
-        variables: {
-          username: username,
-        }
-      });
-    }
-  }, [login])
 
   return (
     <div

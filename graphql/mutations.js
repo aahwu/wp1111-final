@@ -23,6 +23,12 @@ export const LOGIN_USER_MUTATION = gql`
       token
       payload
       errorMsg
+      kanbans {
+        _id
+        name
+        description
+        favorite
+      }
     }
   }
 `;

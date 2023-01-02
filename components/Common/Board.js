@@ -72,7 +72,12 @@ const Board = () => {
 
   const handleUpdateKanbanFavorite = async () => {
     const nextIsFavorite = !isFavourite;
-    console.log(nextIsFavorite)
+    const newKanbans = [...kanbans];
+    const index = newKanbans.findIndex((kanbanObject) => kanbanObject._id === selectedKanbanId);
+    const newKanban = {...newKanbans[index]}
+    newKanban.favorite = nextIsFavorite;
+    newKanbans[index] = newKanban;
+    setKanbans([...newKanbans])
     setIsFavourite(nextIsFavorite);
     await updateKanbanFavorite({
       variables: {

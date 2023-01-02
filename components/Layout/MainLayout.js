@@ -50,10 +50,10 @@ const MainLayout = ({ data, children }) => {
     items: [
       getItem('Add Kanban', 'addKanban', <PlusCircleOutlined />),
       getItem('Kanban', 'sub1', <AppstoreOutlined />, 
-      kanbans.map((kanban) => ({
+      kanbans ? kanbans.map((kanban) => ({
         key: kanban._id,
         label: (kanban.name) ? kanban.name : 'Untitled'
-      }))
+      })) : []
       ),
     ] 
   };
@@ -92,38 +92,38 @@ const MainLayout = ({ data, children }) => {
   )
 }
 
-export async function getStaticProps() {
+// export async function getStaticProps() {
 
-  const client = getClient();
-  const { data } = await client.query({query: GET_KANBANS_QUERY});
-  console.log(data)
-  console.log(client.cache.extract())
-  // function getItem(label, key, icon, children) {
-  //   return {
-  //     key,
-  //     icon,
-  //     children,
-  //     label,
-  //   };
-  // }
-  // const categories = {
-  //   user: 'inarro',
-  //   items: [
-  //     getItem('Kanban', 'sub1', <AppstoreOutlined />, [
-  //       getItem('Tom', '3'),
-  //       getItem('Bill', '4'),
-  //       getItem('Alex', '5'),
-  //     ]),
-  //     getItem('Favorite', 'sub2', <HeartOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-  //   ] 
-  // };
-  // console.log(categories)
+//   const client = getClient();
+//   const { data } = await client.query({query: GET_KANBANS_QUERY});
+//   console.log(data)
+//   console.log(client.cache.extract())
+//   // function getItem(label, key, icon, children) {
+//   //   return {
+//   //     key,
+//   //     icon,
+//   //     children,
+//   //     label,
+//   //   };
+//   // }
+//   // const categories = {
+//   //   user: 'inarro',
+//   //   items: [
+//   //     getItem('Kanban', 'sub1', <AppstoreOutlined />, [
+//   //       getItem('Tom', '3'),
+//   //       getItem('Bill', '4'),
+//   //       getItem('Alex', '5'),
+//   //     ]),
+//   //     getItem('Favorite', 'sub2', <HeartOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
+//   //   ] 
+//   // };
+//   // console.log(categories)
 
-  return {
-    props: { 
-      data
-    },
-  };
-}
+//   return {
+//     props: { 
+//       data
+//     },
+//   };
+// }
 
 export const getLayout = (page) => <MainLayout>{page}</MainLayout>;
