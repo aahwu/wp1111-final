@@ -37,7 +37,7 @@ const Mutation = {
       return { payload: "FAIL", errorMsg: "Wrong password."}
     }
     console.log("success")
-    const newToken = await createToken({ id: userExist._id, name: userExist.name });
+    const newToken = jwt.sign({ id: userExist._id, name: userExist.name }, SECRET, {expiresIn: '1d'});
     console.log(newToken)
     return { 
       user: userExist, 
