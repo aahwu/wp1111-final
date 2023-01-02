@@ -13,6 +13,7 @@ import {
   DELETE_KANBAN_MUTATION,
   UPDATE_KANBAN_NAME_MUTATION,
   UPDATE_KANBAN_DESCRIPTION_MUTATION,
+  UPDATE_KANBAN_FAVORITE_MUTATION,
   CREATE_USER_MUTATION,
 
   LOGIN_USER_MUTATION,
@@ -49,6 +50,7 @@ const KanbanContext = createContext({
   deleteKanban: () => {},
   updateKanbanName: () => {},
   updateKanbanDescription: () => {},
+  updateKanbanFavorite: () => {},
 
   // user mutation
   createUser: () => {},
@@ -186,6 +188,7 @@ const KanbanProvider = (props) => {
   const [deleteKanban, { data: deletedKanbanData }] = useMutation(DELETE_KANBAN_MUTATION, { context: { headers: { authorization: token } } });
   const [updateKanbanName, { data: updatedKanbanName }] = useMutation(UPDATE_KANBAN_NAME_MUTATION, { context: { headers: { authorization: token } } });
   const [updateKanbanDescription, { data: updatedKanbanDescription }] = useMutation(UPDATE_KANBAN_DESCRIPTION_MUTATION, { context: { headers: { authorization: token } } });
+  const [updateKanbanFavorite, { data: updatedKanbanFavorite }] = useMutation(UPDATE_KANBAN_FAVORITE_MUTATION, { context: { headers: { authorization: token } } });
 
   // useEffect for kanban mutation
   useEffect(() => {
@@ -277,7 +280,7 @@ const KanbanProvider = (props) => {
         setUsername, setToken, setSelectedKanbanId, setKanbans, setLists, setSelectedCard, setModalOpened, setLogin,
         createCard, deleteCard, updateCard, updateCardPosition,
         createList, deleteList, updateList,
-        createKanban, deleteKanban, updateKanbanName, updateKanbanDescription,
+        createKanban, deleteKanban, updateKanbanName, updateKanbanDescription, updateKanbanFavorite,
         createUser,
         loginUser,
         displayStatus,

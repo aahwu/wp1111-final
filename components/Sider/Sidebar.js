@@ -18,7 +18,29 @@ import { useRouter } from 'next/router';
 const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {
 
   const router = useRouter();
-  const { username, setLogin, setToken } = useKanban();
+  const { 
+    username,
+    setUsername,
+    setToken,
+    setSelectedKanbanId,
+    setKanbans,
+    setLists,
+    setSelectedCard,
+    setModalOpened,
+    setLogin,
+  } = useKanban();
+
+  const handleLogout = () => {
+    setUsername('');
+    setToken('');
+    setSelectedKanbanId('');
+    setKanbans([]);
+    setLists([]);
+    setSelectedCard({});
+    setModalOpened(false);
+    setLogin(false);
+    router.push('/auth/login')
+  }
 
   return (
     <Layout.Sider>
@@ -38,11 +60,7 @@ const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {
           {username ? username : sidebarItem.defaultUser}
         </Typography>
         <IconButton
-          onClick={() => {
-            setLogin(false);
-            setToken('');
-            router.push('/auth/login')
-          }}
+          onClick={handleLogout}
         >
           <LogoutOutlined 
             style={{

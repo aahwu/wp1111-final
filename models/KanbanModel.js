@@ -20,7 +20,7 @@ const KanbanSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'DroppableList'
   }],
-  favourite: {
+  favorite: {
     type: Boolean,
     default: false
   },

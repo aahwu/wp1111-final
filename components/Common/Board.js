@@ -34,6 +34,7 @@ const Board = () => {
     deleteKanban,
     updateKanbanName,
     updateKanbanDescription,
+    updateKanbanFavorite,
   } = useKanban();
   const [isFavourite, setIsFavourite] = useState(false);
   const [title, setTitle] = useState('');
@@ -44,6 +45,7 @@ const Board = () => {
       const selectedKanban = kanbans.find((kanbanObject) => kanbanObject._id === selectedKanbanId);
       setTitle(selectedKanban.name);
       setDescription(selectedKanban.description);
+      setIsFavourite(selectedKanban.favorite);
     }
   }, [selectedKanbanId])
 
@@ -68,7 +70,18 @@ const Board = () => {
     }
   }, [listsData])
 
-  const handleAddFavourite = async () => {
+  const handleUpdateKanbanFavorite = async () => {
+    const nextIsFavorite = !isFavourite;
+    console.log(nextIsFavorite)
+    setIsFavourite(nextIsFavorite);
+    await updateKanbanFavorite({
+      variables: {
+        kanbanId: selectedKanbanId,
+        newData: {
+          favorite: nextIsFavorite
+        }
+      }
+    });
     try {
     } catch (err) {
       alert(err)
@@ -153,7 +166,7 @@ const Board = () => {
           width: '100%',
           flex: 0,
         }}>
-          <IconButton variant='outlined' onClick={handleAddFavourite}>
+          <IconButton variant='outlined' onClick={handleUpdateKanbanFavorite}>
             {
               isFavourite ? (
                 <StarOutlinedIcon color='warning' />

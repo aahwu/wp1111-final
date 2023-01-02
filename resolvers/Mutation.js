@@ -64,7 +64,10 @@ const Mutation = {
     }
     return kanban;
   },
-  updateKanbanName: async (parent, { kanbanId, data }, { KanbanModel }) => {
+  updateKanbanName: async (parent, { kanbanId, data }, { KanbanModel, me }) => {
+    if (!me) {
+      throw new AuthenticationError("Please log in again.");
+    }
     const kanban = await KanbanModel.findByIdAndUpdate(kanbanId, data, { new: true });
 
     if (!kanban) {
@@ -73,9 +76,23 @@ const Mutation = {
 
     return kanban;
   },
-  updateKanbanDescription: async (parent, { kanbanId, data }, { KanbanModel }) => {
+  updateKanbanDescription: async (parent, { kanbanId, data }, { KanbanModel, me }) => {
+    if (!me) {
+      throw new AuthenticationError("Please log in again.");
+    }
     const kanban = await KanbanModel.findByIdAndUpdate(kanbanId, data, { new: true });
 
+    if (!kanban) {
+      throw new Error('Kanban not exist');
+    }
+
+    return kanban;
+  },
+  updateKanbanFavorite: async (parent, { kanbanId, data }, { KanbanModel, me }) => {
+    if (!me) {
+      throw new AuthenticationError("Please log in again.");
+    }
+    const kanban = await KanbanModel.findByIdAndUpdate(kanbanId, data, { new: true });
     if (!kanban) {
       throw new Error('Kanban not exist');
     }

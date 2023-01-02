@@ -64,6 +64,15 @@ export const UPDATE_KANBAN_DESCRIPTION_MUTATION = gql`
   }
 `
 
+export const UPDATE_KANBAN_FAVORITE_MUTATION = gql`
+  mutation UpdateKanbanFavorite($kanbanId: ID!, $newData: UpdateKanbanFavoriteInput!) {
+    updateKanbanFavorite(kanbanId: $kanbanId, data: $newData) {
+      _id
+      favorite
+    }
+  }
+`
+
 // list mutation
 export const CREATE_LIST_MUTATION = gql`
   mutation CreateList($kanbanId: ID!) {

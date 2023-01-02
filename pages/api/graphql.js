@@ -33,6 +33,7 @@ const typeDefs = gql`
     deleteKanban(kanbanId: ID!): Kanban!
     updateKanbanName(kanbanId: ID!, data: UpdateKanbanNameInput!): Kanban!
     updateKanbanDescription(kanbanId: ID!, data: UpdateKanbanDescriptionInput!): Kanban!
+    updateKanbanFavorite(kanbanId: ID!, data: UpdateKanbanFavoriteInput!): Kanban!
 
     createList(kanbanId: ID!): List!
     deleteList(listId: ID!): List!
@@ -91,6 +92,9 @@ const typeDefs = gql`
   }
   input UpdateKanbanDescriptionInput {
     description: String!
+  }
+  input UpdateKanbanFavoriteInput {
+    favorite: Boolean!
   }
   input UpdateListInput {
     name: String
@@ -158,10 +162,8 @@ const apolloServer = new ApolloServer({
     const SECRET = "inari";//process.env.SECRET;
     const context = { KanbanModel, DroppableListModel, DraggableCardModel, UserModel, SECRET };
     if (token) {
-      console.log(token);
       try {
         const me = await jwt.verify(token.replace('Bearer ', ''), SECRET);
-        console.log(me)
         return { ...context, me };
       } catch (e) {
         throw new Error('Your session expired. Sign in again.');
