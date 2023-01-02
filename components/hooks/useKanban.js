@@ -226,12 +226,12 @@ const KanbanProvider = (props) => {
       const loggedinUser = loggedinUserData.login;
       const payload = loggedinUser.payload;
       if (payload === 'SUCCESS') {
+        setToken(loggedinUser.token);
+        router.push('/kanban')
         displayStatus({
           type: payload,
           msg: "Log in successfully!",
         })
-        setToken(loggedinUser.token);
-        router.push('/kanban')
       } else {
         displayStatus({
           type: payload,
