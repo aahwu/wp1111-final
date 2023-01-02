@@ -32,25 +32,8 @@ const MainLayout = ({ data, children }) => {
   // console.log(data)
 
   // hook
-  const { token, kanbans, setKanbans, selectedKanbanId, setSelectedKanbanId, createKanban } = useKanban();
+  const { username, token, kanbans, setKanbans, selectedKanbanId, setSelectedKanbanId, createKanban } = useKanban();
   const router = useRouter();
-
-  const {
-    loading, error, data: kanbansData, subscribeToMore,
-  } = useQuery(GET_KANBANS_QUERY, {
-      context: {
-        headers: {
-          authorization: token,
-        }
-      },
-    }
-  );
-
-  useEffect(() => {
-    if(kanbansData) {
-      setKanbans(kanbansData.kanbans);
-    }
-  }, [kanbansData])
 
   // handle onclick of menu
   const handleOnClick = async ({ key }) => {

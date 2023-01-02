@@ -28,6 +28,7 @@ const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {
     setSelectedCard,
     setModalOpened,
     setLogin,
+    setLoadKanbans,
   } = useKanban();
 
   const handleLogout = () => {
@@ -39,6 +40,7 @@ const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {
     setSelectedCard({});
     setModalOpened(false);
     setLogin(false);
+    setKanbans(false);
     router.push('/auth/login')
   }
 

@@ -19,6 +19,7 @@ import {
   LOGIN_USER_MUTATION,
 
 } from "../../graphql/mutations";
+import { GET_KANBANS_QUERY } from "../../graphql/queries";
 import { getClient } from "../../lib/getClient";
 import { useRouter } from 'next/router'
 
@@ -33,6 +34,7 @@ const KanbanContext = createContext({
   selectedCard: {},
   modalOpened: false,
   login: false,
+  loadKanbans: false,
 
   // card mutation
   createCard: () => {},
@@ -51,6 +53,7 @@ const KanbanContext = createContext({
   updateKanbanName: () => {},
   updateKanbanDescription: () => {},
   updateKanbanFavorite: () => {},
+  queryKanbans: () => {},
 
   // user mutation
   createUser: () => {},
@@ -78,7 +81,9 @@ const KanbanProvider = (props) => {
   const [selectedCard, setSelectedCard] = useState({});
   const [modalOpened, setModalOpened] = useState(false);
   const [login, setLogin] = useState(false);
+  const [loadKanbans, setLoadKanbans] = useState(false);
   const router = useRouter()
+
 
   // card mutation
   const [createCard, { data: newCardData }] = useMutation(CREATE_CARD_MUTATION);
@@ -189,6 +194,15 @@ const KanbanProvider = (props) => {
   const [updateKanbanName, { data: updatedKanbanName }] = useMutation(UPDATE_KANBAN_NAME_MUTATION, { context: { headers: { authorization: token } } });
   const [updateKanbanDescription, { data: updatedKanbanDescription }] = useMutation(UPDATE_KANBAN_DESCRIPTION_MUTATION, { context: { headers: { authorization: token } } });
   const [updateKanbanFavorite, { data: updatedKanbanFavorite }] = useMutation(UPDATE_KANBAN_FAVORITE_MUTATION, { context: { headers: { authorization: token } } });
+  const [queryKanbans, { data: kanbansData }] = useLazyQuery(GET_KANBANS_QUERY, { context: { headers: { authorization: token } } });
+
+  useEffect(() => {
+    if(kanbansData && !loadKanbans) {
+      console.log("set kanban")
+      setKanbans(kanbansData.kanbans);
+      setLoadKanbans(true);
+    }
+  }, [kanbansData])
 
   // useEffect for kanban mutation
   useEffect(() => {
@@ -280,7 +294,7 @@ const KanbanProvider = (props) => {
         setUsername, setToken, setSelectedKanbanId, setKanbans, setLists, setSelectedCard, setModalOpened, setLogin,
         createCard, deleteCard, updateCard, updateCardPosition,
         createList, deleteList, updateList,
-        createKanban, deleteKanban, updateKanbanName, updateKanbanDescription, updateKanbanFavorite,
+        createKanban, deleteKanban, updateKanbanName, updateKanbanDescription, updateKanbanFavorite, queryKanbans,
         createUser,
         loginUser,
         displayStatus,
