@@ -228,6 +228,7 @@ const KanbanProvider = (props) => {
   useEffect(() => {
     console.log("Login finish")
     if (loggedinUserData) {
+      console.log("Login success")
       const loggedinUser = loggedinUserData.login;
       const payload = loggedinUser.payload;
       if (payload === 'SUCCESS') {
