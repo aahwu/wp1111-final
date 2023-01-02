@@ -1,10 +1,11 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const SECRET = process.env.SECRET;
 
 const createToken = ({ id, name }) => {
   jwt.sign(
     { id, name },
-    process.env.SECRET, 
+    SECRET, 
     {expiresIn: '1d'}
   )
 };
