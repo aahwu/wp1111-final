@@ -1,6 +1,6 @@
 import { getLayout } from '../../components/Layout/AuthLayout'
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import RegisterFOrm from '../../containers/RegisterFOrm'
+import RegisterForm from '../../containers/RegisterForm'
 
 const login = () => {
 
@@ -31,7 +31,7 @@ const login = () => {
         >
           Welcome to Inarro!
         </div>
-        <RegisterFOrm />
+        <RegisterForm />
       </div>
     </>
   )
