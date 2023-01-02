@@ -1,19 +1,5 @@
 import { gql } from '@apollo/client';
 
-export const LOGIN_USER_QUERY = gql`
-  query Login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-      user {
-        _id
-        name
-      }
-      token
-      payload
-      errorMsg
-    }
-  }
-`;
-
 export const GET_KANBANS_QUERY = gql`
   query Kanbans {
     kanbans {

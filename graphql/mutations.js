@@ -13,6 +13,20 @@ export const CREATE_USER_MUTATION = gql`
   }
 `
 
+export const LOGIN_USER_MUTATION = gql`
+  mutation Login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      user {
+        _id
+        name
+      }
+      token
+      payload
+      errorMsg
+    }
+  }
+`;
+
 // kanban mutation
 export const CREATE_KANBAN_MUTATION = gql`
   mutation CreateKanban {

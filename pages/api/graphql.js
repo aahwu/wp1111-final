@@ -17,8 +17,6 @@ import getConfig from 'next/config';
 
 const typeDefs = gql`
   type Query {
-    login(username: String!, password: String!): LoginPayload!
-
     kanbans: [Kanban!]
     lists(query: String!): [List!]
     getListsById(query: ID!): [List!]
@@ -27,6 +25,7 @@ const typeDefs = gql`
 
   type Mutation {
     createUser(username: String!, password: String!): RegisterPayload!
+    login(username: String!, password: String!): LoginPayload!
 
     createKanban: Kanban!
     deleteKanban(kanbanId: ID!): Kanban!

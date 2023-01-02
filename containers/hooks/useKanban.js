@@ -15,11 +15,9 @@ import {
   UPDATE_KANBAN_DESCRIPTION_MUTATION,
   CREATE_USER_MUTATION,
 
-} from "../../graphql/mutations";
-import {
-  LOGIN_USER_QUERY,
+  LOGIN_USER_MUTATION,
 
-} from "../../graphql/queries"
+} from "../../graphql/mutations";
 import { getClient } from "../../lib/getClient";
 import { useRouter } from 'next/router'
 
@@ -55,7 +53,6 @@ const KanbanContext = createContext({
   // user mutation
   createUser: () => {},
 
-  // user query
   loginUser: () => {},
 });
 
@@ -201,6 +198,7 @@ const KanbanProvider = (props) => {
 
   // user mutation
   const [createUser, { data: createdUserData }] = useMutation(CREATE_USER_MUTATION);
+  const [loginUser, { data: loggedinUserData }] = useMutation(LOGIN_USER_MUTATION);
   
   // useEffect for user mutation
   useEffect(() => {
@@ -223,15 +221,13 @@ const KanbanProvider = (props) => {
     }
   }, [createdUserData])
 
-  // user query
-  const [loginUser, { data: loggedinUserData }] = useLazyQuery(LOGIN_USER_QUERY, {fetchPolicy: 'network-only'});
   useEffect(() => {
     console.log(loggedinUserData)
     if (loggedinUserData) {
-      console.log("Login success")
       const loggedinUser = loggedinUserData.login;
       const payload = loggedinUser.payload;
       if (payload === 'SUCCESS') {
+        console.log("Login success")
         setToken(loggedinUser.token);
         router.push('/kanban')
       } else {
