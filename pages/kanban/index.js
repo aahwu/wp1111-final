@@ -11,8 +11,6 @@ const kanban = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const { selectedKanbanId, kanbans } = useKanban();
-
   return (
     <>
       <div
