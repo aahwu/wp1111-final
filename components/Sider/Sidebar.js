@@ -12,7 +12,7 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons';
 import { useState } from 'react';
-import { useKanban } from '../../containers/hooks/useKanban';
+import { useKanban } from '../hooks/useKanban';
 import { useRouter } from 'next/router';
 
 const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {

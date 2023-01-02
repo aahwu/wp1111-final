@@ -222,7 +222,6 @@ const KanbanProvider = (props) => {
   }, [createdUserData])
 
   useEffect(() => {
-    console.log(loggedinUserData)
     if (loggedinUserData) {
       const loggedinUser = loggedinUserData.login;
       const payload = loggedinUser.payload;
@@ -241,7 +240,7 @@ const KanbanProvider = (props) => {
 
   // router for kanban
   useEffect(() => {
-    if (login) {
+    if (true) {
       router.push(`/kanban/${selectedKanbanId}`)
       console.log(selectedKanbanId)
     }

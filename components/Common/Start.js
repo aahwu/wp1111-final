@@ -1,6 +1,6 @@
 import { LoadingButton } from '@mui/lab';
 import { useState } from "react"
-import { useKanban } from './hooks/useKanban';
+import { useKanban } from '../hooks/useKanban';
 
 const Start = ({ noKanban }) => {
 

@@ -1,6 +1,7 @@
-import DDWrapper from "../components/Common/rbd/DDContextWrapper";
-import { useKanban } from "./hooks/useKanban";
+import { useKanban } from "../hooks/useKanban";
 import { Box, Button, Typography, Divider, TextField, IconButton, Card } from '@mui/material'
+import List from "./List";
+import { DragDropContext } from "react-beautiful-dnd";
 
 
 const Kanban = () => {
@@ -111,7 +112,28 @@ const Kanban = () => {
         </Typography>
       </div>
       <Divider sx={{ margin: '10px 0', flex: 0 }} />
-      {lists ? <DDWrapper lists={lists} onDragEnd={onDragEnd} /> : <></>}
+      {!lists ? <></> : 
+        // <DDWrapper lists={lists} onDragEnd={onDragEnd} />
+        <Box sx={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          // width: 'calc(100vw - 400px)',
+          // height: '100%',
+          overflowX: 'auto',
+          displayPrint: 'table-row',
+          flex: 2,
+        }}>
+          <DragDropContext onDragEnd={onDragEnd}>
+            {lists.map((list, index) => (
+              <div key={list._id}
+                // style={{ width: '300px' }}
+              >
+                <List list={list} listInd={index} key={list._id} />
+              </div>
+            ))}
+          </DragDropContext>
+        </Box>
+      }
     </>
   )
 }

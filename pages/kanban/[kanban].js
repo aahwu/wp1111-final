@@ -1,9 +1,9 @@
-import Board from '../../containers/Board';
-import Start from '../../containers/Start';
+import Board from '../../components/Common/Board';
+import Start from '../../components/Common/Start';
 import React, { useEffect, useState } from 'react';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { getLayout } from '../../components/Layout/MainLayout'
-import { useKanban } from '../../containers/hooks/useKanban';
+import { useKanban } from '../../components/hooks/useKanban';
 
 
 const kanban = () => {

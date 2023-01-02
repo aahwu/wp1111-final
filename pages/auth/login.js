@@ -1,6 +1,6 @@
 import { getLayout } from '../../components/Layout/AuthLayout'
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import LogInForm from '../../containers/LogInForm'
+import LogInForm from '../../components/Common/LogInForm'
 
 const login = () => {
 

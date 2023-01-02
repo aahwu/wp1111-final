@@ -1,6 +1,6 @@
 import { Input, Form, Modal } from 'antd';
 import { useEffect, useState } from 'react';
-import { useKanban } from './hooks/useKanban';
+import { useKanban } from '../hooks/useKanban';
 import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import { Backdrop, Fade, IconButton, Box, Typography, Divider } from '@mui/material'

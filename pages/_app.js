@@ -1,5 +1,5 @@
 import '../styles/globals.css'
-import { KanbanProvider } from '../containers/hooks/useKanban'
+import { KanbanProvider } from '../components/hooks/useKanban'
 import { ApolloClient, InMemoryCache, ApolloProvider, split, HttpLink, ApolloLink, from } from '@apollo/client';
 import { getClient } from '../lib/getClient';
 

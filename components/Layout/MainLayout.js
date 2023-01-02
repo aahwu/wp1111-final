@@ -1,5 +1,5 @@
 import Sidebar from "../Sider/Sidebar";
-import { useKanban } from "../../containers/hooks/useKanban";
+import { useKanban } from "../hooks/useKanban";
 import React, { useEffect, useState } from 'react';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import {

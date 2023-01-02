@@ -1,6 +1,6 @@
 import { getLayout } from '../../components/Layout/AuthLayout'
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import RegisterForm from '../../containers/RegisterForm'
+import RegisterForm from '../../components/Common/RegisterForm'
 
 const login = () => {
 
