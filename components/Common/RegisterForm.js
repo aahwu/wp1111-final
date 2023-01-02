@@ -3,7 +3,7 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoadingButton } from '@mui/lab';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { useRouter } from 'next/router'
-import { useKanban } from './hooks/useKanban';
+import { useKanban } from '../hooks/useKanban';
 import { useState } from 'react';
 import Link from 'next/link'
 
