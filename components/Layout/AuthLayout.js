@@ -1,7 +1,7 @@
+import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import Sidebar from "../Sider/Sidebar";
 import { useKanban } from "../../containers/hooks/useKanban";
 import React, { useEffect, useState } from 'react';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import {
   DesktopOutlined,
   FileOutlined,
@@ -14,9 +14,6 @@ import {
   HeartOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
-import { useQuery } from '@apollo/client';
-import { GET_KANBANS_QUERY, GET_LISTS_QUERY } from "../../graphql/queries";
-import { getClient } from '../../lib/getClient'
 
 function getItem(label, key, icon, children) {
   return {
@@ -27,20 +24,10 @@ function getItem(label, key, icon, children) {
   };
 }
 
-const MainLayout = ({ data, children }) => {
-  // console.log(data)
-  const {
-    loading, error, data: kanbansData, subscribeToMore,
-  } = useQuery(GET_KANBANS_QUERY);
+const AuthLayout = ({ children }) => {
 
   // hook
   const { kanbans, setKanbans, selectedKanbanId, setSelectedKanbanId, createKanban } = useKanban();
-
-  useEffect(() => {
-    if(kanbansData) {
-      setKanbans(kanbansData.kanbans);
-    }
-  }, [kanbansData])
 
   // handle onclick of menu
   const handleOnClick = async ({ key }) => {
@@ -71,16 +58,17 @@ const MainLayout = ({ data, children }) => {
       }}
     >
       <Layout>
-        <Sidebar
+        {/* <Sidebar
           sidebarItem={sidebarItem}
           handleOnClick={handleOnClick} 
           selectedKeys={[selectedKanbanId]}  
-        />
+        /> */}
         <Layout className="content-layout">
           <Layout.Content
             style={{
               margin: 16,
               height: '100%',
+              display: 'flex',
             }}
           >
             {children}
@@ -132,4 +120,4 @@ export async function getStaticProps() {
   };
 }
 
-export const getLayout = (page) => <MainLayout>{page}</MainLayout>;
+export const getLayout = (page) => <AuthLayout>{page}</AuthLayout>;

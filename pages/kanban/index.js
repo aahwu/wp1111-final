@@ -6,7 +6,7 @@ import { getLayout } from '../../components/Layout/MainLayout'
 import { useKanban } from '../../containers/hooks/useKanban';
 
 
-const MainPage = () => {
+const kanban = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -22,12 +22,12 @@ const MainPage = () => {
           background: colorBgContainer,
         }}
       >
-        {(selectedKanbanId === '') ? <Start /> : <Board />}
+        <Start />
       </div>
     </>
   );
 }
 
-MainPage.getLayout = getLayout;
+kanban.getLayout = getLayout;
 
-export default MainPage;
+export default kanban;

@@ -1,6 +1,6 @@
 import '../styles/globals.css'
 import { KanbanProvider } from '../containers/hooks/useKanban'
-import { ApolloClient, InMemoryCache, ApolloProvider, split, HttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, split, HttpLink, ApolloLink, from } from '@apollo/client';
 import { getClient } from '../lib/getClient';
 
 const link = new HttpLink({
@@ -8,8 +8,20 @@ const link = new HttpLink({
   fetch: fetch
 });
 
+const authMiddleware = new ApolloLink((operation, forward) => {
+  const customHeaders = operation.getContext().hasOwnProperty("headers") ? operation.getContext().headers : {};
+  operation.setContext({
+    headers: {
+      ...customHeaders
+      //we can also set the authorization header
+      // authorization: localStorage.getItem('jjjjjj'),
+    }
+  });
+  return forward(operation);
+});
+
 const client = new ApolloClient({
-  link: link,
+  link: from([authMiddleware, link]),
   cache: new InMemoryCache(),
 });
 

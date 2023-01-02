@@ -42,6 +42,7 @@ const Start = ({ noKanban }) => {
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: '18px',
+            color: 'black',
           }}
         >
           <p

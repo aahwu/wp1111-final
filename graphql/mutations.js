@@ -1,5 +1,18 @@
 import { gql } from '@apollo/client';
 
+// user mutation
+export const CREATE_USER_MUTATION = gql`
+  mutation CreateUser($username: String!, $password: String!) {
+    createUser(username: $username, password: $password) {
+      user {
+        _id
+        name
+      }
+      payload
+    }
+  }
+`
+
 // kanban mutation
 export const CREATE_KANBAN_MUTATION = gql`
   mutation CreateKanban {

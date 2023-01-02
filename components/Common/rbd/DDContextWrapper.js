@@ -17,7 +17,7 @@ const DDWrapper = ({ onDragEnd, lists }) => {
     }}>
       <DragDropContext onDragEnd={onDragEnd}>
         {lists.map((list, index) => (
-          <div key={list._id} 
+          <div key={list._id}
             // style={{ width: '300px' }}
           >
             <DropWrapper list={list} listInd={index} key={list._id} />

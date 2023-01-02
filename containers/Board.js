@@ -43,6 +43,11 @@ const Board = () => {
       input: selectedKanbanId
     },
     fetchPolicy: 'cache-and-network',
+    context: {
+      headers: {
+        authorization: "testToken",
+      }
+    },
   });
 
   useEffect(() => {

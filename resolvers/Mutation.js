@@ -1,4 +1,20 @@
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 const Mutation = {
+
+  /* User mutation */
+  createUser: async (parent, { username, password }, { UserModel }) => {
+    const userExist = await UserModel.findOne({ name: username });
+    if (userExist) {
+      return { user: userExist, payload: 'FAIL' };
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(hashedPassword)
+    const newUser = await new UserModel({ name: username, password: hashedPassword}).save();
+
+    return { user: newUser, payload: 'SUCCESS'};
+  },
 
   /* Kanban mutation */
   createKanban: async (parent, args, { KanbanModel }) => {

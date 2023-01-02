@@ -1,5 +1,6 @@
-import { useMutation } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { useState, useEffect, createContext, useContext, useDebugValue } from "react";
+import { message } from 'antd'
 import {
   CREATE_CARD_MUTATION, 
   DELETE_CARD_MUTATION,
@@ -12,17 +13,27 @@ import {
   DELETE_KANBAN_MUTATION,
   UPDATE_KANBAN_NAME_MUTATION,
   UPDATE_KANBAN_DESCRIPTION_MUTATION,
+  CREATE_USER_MUTATION,
+
 } from "../../graphql/mutations";
+import {
+  LOGIN_USER_QUERY,
+
+} from "../../graphql/queries"
 import { getClient } from "../../lib/getClient";
+import { useRouter } from 'next/router'
 
 const client = getClient();
 
 const KanbanContext = createContext({
+  username: '',
+  token: '',
   selectedKanbanId: '',
   kanbans: [],
   lists: [],
   selectedCard: {},
   modalOpened: false,
+  login: false,
 
   // card mutation
   createCard: () => {},
@@ -40,6 +51,12 @@ const KanbanContext = createContext({
   deleteKanban: () => {},
   updateKanbanName: () => {},
   updateKanbanDescription: () => {},
+
+  // user mutation
+  createUser: () => {},
+
+  // user query
+  loginUser: () => {},
 });
 
 // generate fake array data: [ { id: ..., content: 'item ${ k+offset }}, ... ]
@@ -54,11 +71,15 @@ const getItems = (count, offset = 0) => {
 
 const KanbanProvider = (props) => {
 
+  const [username, setUsername] = useState('');
+  const [token, setToken] = useState('');
   const [selectedKanbanId, setSelectedKanbanId] = useState('');
   const [kanbans, setKanbans] = useState([]);
   const [lists, setLists] = useState([]);
   const [selectedCard, setSelectedCard] = useState({});
   const [modalOpened, setModalOpened] = useState(false);
+  const [login, setLogin] = useState(false);
+  const router = useRouter()
 
   // card mutation
   const [createCard, { data: newCardData }] = useMutation(CREATE_CARD_MUTATION);
@@ -178,14 +199,92 @@ const KanbanProvider = (props) => {
     }
   }, [createdKanbanData])
 
+  // user mutation
+  const [createUser, { data: createdUserData }] = useMutation(CREATE_USER_MUTATION);
+  
+  // useEffect for user mutation
+  useEffect(() => {
+    if (createdUserData) {
+      const createdUser = createdUserData.createUser;
+      const payload = createdUser.payload;
+      if (payload === 'SUCCESS') {
+        displayStatus({
+          type: payload,
+          msg: 'Register successfully!'
+        })
+        setUsername(createdUser.user.name);
+        router.push('/auth/login')
+      } else {
+        displayStatus({
+          type: payload,
+          msg: 'User exist. Please try another username.'
+        })
+      }
+    }
+  }, [createdUserData])
+
+  // user query
+  const [loginUser, { data: loggedinUserData }] = useLazyQuery(LOGIN_USER_QUERY, {fetchPolicy: 'network-only'});
+  useEffect(() => {
+    if (loggedinUserData) {
+      const loggedinUser = loggedinUserData.login;
+      const payload = loggedinUser.payload;
+      if (payload === 'SUCCESS') {
+        setToken(loggedinUser.token);
+        router.push('/kanban')
+      } else {
+        displayStatus({
+          type: payload,
+          msg: loggedinUser.errorMsg,
+        })
+      }
+    }
+  }, [loggedinUserData])
+
+  // router for kanban
+  useEffect(() => {
+    if (login) {
+      router.push(`/kanban/${selectedKanbanId}`)
+      console.log(selectedKanbanId)
+    }
+  }, [selectedKanbanId])
+
+  const displayStatus = (s) => {
+    if (s.msg) {
+      const { type, msg } = s;
+      const content = { content: msg, duration: 1 }
+      switch (type) {
+        case 'info':
+          message.info(content);
+          break;
+        case 'warning':
+          message.warning(content);
+          break;
+        case 'SUCCESS':
+          message.success(content);
+          break;
+        case 'FAIL':
+          message.error(content);
+          break;
+        default:
+          message.error(content);
+          break;
+      }
+    }
+  }
+
+
   return (
     <KanbanContext.Provider
       value={{
-        selectedKanbanId, kanbans, lists, selectedCard, modalOpened,
-        setSelectedKanbanId, setKanbans, setLists, setSelectedCard, setModalOpened,
+        username, token, selectedKanbanId, kanbans, lists, selectedCard, modalOpened, login,
+        setUsername, setToken, setSelectedKanbanId, setKanbans, setLists, setSelectedCard, setModalOpened, setLogin,
         createCard, deleteCard, updateCard, updateCardPosition,
         createList, deleteList, updateList,
         createKanban, deleteKanban, updateKanbanName, updateKanbanDescription,
+        createUser,
+        loginUser,
+        displayStatus,
       }}
       {...props}
     />

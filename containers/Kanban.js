@@ -111,7 +111,7 @@ const Kanban = () => {
         </Typography>
       </div>
       <Divider sx={{ margin: '10px 0', flex: 0 }} />
-      {lists ? <DDWrapper lists={lists} onDragEnd={onDragEnd} /> : <p>create a list first</p>}
+      {lists ? <DDWrapper lists={lists} onDragEnd={onDragEnd} /> : <></>}
     </>
   )
 }

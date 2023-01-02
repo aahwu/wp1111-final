@@ -1,6 +1,7 @@
 import { gql, ApolloServer } from "apollo-server-micro";
 import Cors from "micro-cors";
 import {ApolloServerPluginLandingPageGraphQLPlayground} from "apollo-server-core"
+import UserModel from "../../models/UserModel"
 import KanbanModel from "../../models/KanbanModel";
 import DroppableListModel from "../../models/DroppableListModel";
 import DraggableCardModel from "../../models/DraggableCardModel";
@@ -16,6 +17,8 @@ import getConfig from 'next/config';
 
 const typeDefs = gql`
   type Query {
+    login(username: String!, password: String!): LoginPayload!
+
     kanbans: [Kanban!]
     lists(query: String!): [List!]
     getListsById(query: ID!): [List!]
@@ -23,6 +26,8 @@ const typeDefs = gql`
   }
 
   type Mutation {
+    createUser(username: String!, password: String!): RegisterPayload!
+
     createKanban: Kanban!
     deleteKanban(kanbanId: ID!): Kanban!
     updateKanbanName(kanbanId: ID!, data: UpdateKanbanNameInput!): Kanban!
@@ -44,6 +49,20 @@ const typeDefs = gql`
   # }
 
   # Type
+  type RegisterPayload {
+    user: User!
+    payload: PayloadType!
+  }
+  type LoginPayload {
+    user: User
+    token: String
+    payload: PayloadType!
+    errorMsg: String
+  }
+  type User {
+    _id: ID!
+    name: String!
+  }
   type Kanban {
     _id: ID!
     name: String
@@ -88,6 +107,11 @@ const typeDefs = gql`
     destinationCardsId: [ID!]!
   }
 
+  enum PayloadType {
+    SUCCESS
+    FAIL
+  }
+
   enum MutationType {
     CREATED
     UPDATED
@@ -127,10 +151,19 @@ const apolloServer = new ApolloServer({
     Kanban,
     List,
   },
-  context: {
-    KanbanModel,
-    DroppableListModel,
-    DraggableCardModel,
+  context: async ({ req }) => {
+    const token = req.headers.authorization;
+    const secret = "secret";//process.env.SECRET;
+    const context = { KanbanModel, DroppableListModel, DraggableCardModel, UserModel, secret };
+    // if (token) {
+    //   try {
+    //     const me = await jwt.verify(token, SECRET);
+    //     return { ...context, me };
+    //   } catch (e) {
+    //     throw new Error('Your session expired. Sign in again.');
+    //   }
+    // }
+    return context;
   },
   introspection: true,
   playground: true,

@@ -1,4 +1,4 @@
-const List  = {
+const List = {
   cards: async (parent) => {
     if (parent.DraggableCard.length === 0) {
       return;

@@ -1,4 +1,37 @@
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const createToken = ({ id, name }) => {
+  jwt.sign(
+    { id, name },
+    process.env.SECRET, 
+    {expiresIn: '1d'}
+  )
+};
+
+
 const Query = {
+  login: async (parent, { username, password }, { UserModel }) => {
+    const userExist = await UserModel.findOne({ name: username });
+    if (!userExist) {
+      console.log("fail")
+      return { payload: "FAIL", errorMsg: "User don\'t exist."}
+    }
+    const passwordValid = await bcrypt.compare(password, userExist.password);
+    if (!passwordValid) {
+      console.log("fail")
+      return { payload: "FAIL", errorMsg: "Wrong password."}
+    }
+    console.log("success")
+    const newToken = await createToken({ id: userExist._id, name: userExist.name });
+    console.log(newToken)
+    return { 
+      user: userExist, 
+      payload: 'SUCCESS', 
+      token: newToken
+    }
+  },
+
   kanbans: async (parent, args, { KanbanModel }) => {
     // if (!query) {
     //   return KanbanModel.find({});

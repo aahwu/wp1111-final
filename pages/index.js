@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import AuthPage from './AuthPage'
+import AuthPage from './auth'
 import Loading from '../components/Common/Loading'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
@@ -10,7 +10,7 @@ export default function Home() {
   const router = useRouter()
   
   useEffect(() => {
-    router.push('/MainPage')
+    router.push('/auth/login')
   }, [])
 
   return (
