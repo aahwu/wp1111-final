@@ -226,6 +226,7 @@ const KanbanProvider = (props) => {
   // user query
   const [loginUser, { data: loggedinUserData }] = useLazyQuery(LOGIN_USER_QUERY, {fetchPolicy: 'network-only'});
   useEffect(() => {
+    console.log("Login finish")
     if (loggedinUserData) {
       const loggedinUser = loggedinUserData.login;
       const payload = loggedinUser.payload;
