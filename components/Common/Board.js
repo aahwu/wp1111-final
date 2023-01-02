@@ -5,8 +5,9 @@ import React, { useEffect, useState } from 'react';
 import Loading from "./Loading";
 import { GET_KANBANS_QUERY, GET_LISTS_QUERY, GET_LISTS_BY_ID_QUERY } from "../../graphql/queries";
 import { Box, IconButton, TextField } from '@mui/material'
-import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
+import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined'
+import StarOutlinedIcon from '@mui/icons-material/StarOutlined'
 import CardModal from "./CardModal";
 
 const Board = () => {
