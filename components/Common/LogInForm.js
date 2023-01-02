@@ -9,16 +9,12 @@ import { useState } from 'react';
 
 const LogInForm = () => {
 
-  const { setLogin, loginUser, loadKanbans } = useKanban();
+  const { setLogin, loginUser } = useKanban();
   const router = useRouter()
   const [loading, setLoading] = useState(false);
   const [loginUsername, setLoginUsername] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    console.log(loadKanbans)
-  }, [loadKanbans])
 
   const onFinish = async (values) => {
     setLoading(true);
