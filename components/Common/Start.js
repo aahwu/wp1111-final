@@ -1,11 +1,11 @@
 import { LoadingButton } from '@mui/lab';
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useKanban } from '../hooks/useKanban';
 
-const Start = ({ noKanban }) => {
+const Start = () => {
 
   const [loading, setLoading] = useState(false)
-  const { kanbans, createKanban, username, login, queryKanbans } = useKanban();
+  const { kanbans, createKanban } = useKanban();
 
   // handle onclick of menu
   const handleOnClick = async () => {

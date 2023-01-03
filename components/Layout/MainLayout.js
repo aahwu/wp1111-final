@@ -1,22 +1,12 @@
 import Sidebar from "../Sider/Sidebar";
 import { useKanban } from "../hooks/useKanban";
-import React, { useEffect, useState } from 'react';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import React, { useState } from 'react';
+import { Layout } from 'antd';
 import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-  DatabaseOutlined,
   AppstoreOutlined,
   PlusCircleOutlined,
-  HeartOutlined,
-  LogoutOutlined,
 } from '@ant-design/icons';
-import { useQuery } from '@apollo/client';
-import { GET_KANBANS_QUERY, GET_LISTS_QUERY } from "../../graphql/queries";
-import { getClient } from '../../lib/getClient'
+import StarOutlinedIcon from '@mui/icons-material/StarOutlined'
 import { useRouter } from 'next/router'
 
 function getItem(label, key, icon, children) {
@@ -32,7 +22,8 @@ const MainLayout = ({ data, children }) => {
   // console.log(data)
 
   // hook
-  const { username, token, kanbans, setKanbans, selectedKanbanId, setSelectedKanbanId, createKanban } = useKanban();
+  const { kanbans, setSelectedKanbanId, createKanban } = useKanban();
+  const [selectedItem, setSelectedItem] = useState('');
   const router = useRouter();
 
   // handle onclick of menu
@@ -40,8 +31,10 @@ const MainLayout = ({ data, children }) => {
     if (key === 'addKanban') {
       await createKanban();
     } else {
-      router.push(`/kanban/${key}`)
-      setSelectedKanbanId(key);
+      const realKey = key.split('-')[0]
+      router.push(`/kanban/${realKey}`)
+      setSelectedKanbanId(realKey);
+      setSelectedItem(key);
     }
   }
 
@@ -49,7 +42,15 @@ const MainLayout = ({ data, children }) => {
     defaultUser: 'Unknown',
     items: [
       getItem('Add Kanban', 'addKanban', <PlusCircleOutlined />),
-      getItem('Kanban', 'sub1', <AppstoreOutlined />, 
+      getItem('Favorite', 'sub1', <StarOutlinedIcon />,
+      kanbans ? kanbans.flatMap((kanban) => {
+        if (!kanban.favorite) {
+          return []
+        }
+        return [{ key: kanban._id + '-fav', label: (kanban.name) ? kanban.name : 'Untitled'}]
+      }) : []
+      ),
+      getItem('Kanban', 'sub2', <AppstoreOutlined />, 
       kanbans ? kanbans.map((kanban) => ({
         key: kanban._id,
         label: (kanban.name) ? kanban.name : 'Untitled'
@@ -68,7 +69,7 @@ const MainLayout = ({ data, children }) => {
         <Sidebar
           sidebarItem={sidebarItem}
           handleOnClick={handleOnClick} 
-          selectedKeys={[selectedKanbanId]}  
+          selectedKeys={[selectedItem]}  
         />
         <Layout className="content-layout">
           <Layout.Content
@@ -91,39 +92,5 @@ const MainLayout = ({ data, children }) => {
     </Layout>
   )
 }
-
-// export async function getStaticProps() {
-
-//   const client = getClient();
-//   const { data } = await client.query({query: GET_KANBANS_QUERY});
-//   console.log(data)
-//   console.log(client.cache.extract())
-//   // function getItem(label, key, icon, children) {
-//   //   return {
-//   //     key,
-//   //     icon,
-//   //     children,
-//   //     label,
-//   //   };
-//   // }
-//   // const categories = {
-//   //   user: 'inarro',
-//   //   items: [
-//   //     getItem('Kanban', 'sub1', <AppstoreOutlined />, [
-//   //       getItem('Tom', '3'),
-//   //       getItem('Bill', '4'),
-//   //       getItem('Alex', '5'),
-//   //     ]),
-//   //     getItem('Favorite', 'sub2', <HeartOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-//   //   ] 
-//   // };
-//   // console.log(categories)
-
-//   return {
-//     props: { 
-//       data
-//     },
-//   };
-// }
 
 export const getLayout = (page) => <MainLayout>{page}</MainLayout>;

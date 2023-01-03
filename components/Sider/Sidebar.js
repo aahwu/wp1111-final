@@ -1,17 +1,8 @@
 import { IconButton, Typography } from '@mui/material'
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Layout, Menu } from 'antd';
 import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-  DatabaseOutlined,
-  AppstoreOutlined,
-  HeartOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
-import { use, useState } from 'react';
 import { useKanban } from '../hooks/useKanban';
 import { useRouter } from 'next/router';
 
@@ -51,7 +42,6 @@ const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between'
-          // background: 'rgba(255, 255, 255, 0.2)',
         }}
       >
         <Typography style={{
@@ -77,7 +67,7 @@ const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {
         }}
         mode="inline"
         items={sidebarItem.items}
-        defaultOpenKeys={['sub1']}
+        defaultOpenKeys={['sub2']}
         onClick={handleOnClick}
         selectedKeys={selectedKeys}
       />

@@ -3,8 +3,8 @@ import { useKanban } from "../hooks/useKanban";
 import { useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import Loading from "./Loading";
-import { GET_KANBANS_QUERY, GET_LISTS_QUERY, GET_LISTS_BY_ID_QUERY } from "../../graphql/queries";
-import { Box, IconButton, TextField } from '@mui/material'
+import { GET_LISTS_BY_ID_QUERY } from "../../graphql/queries";
+import { IconButton, TextField } from '@mui/material'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined'
 import StarOutlinedIcon from '@mui/icons-material/StarOutlined'
@@ -15,13 +15,6 @@ const Board = () => {
   
   // router
   const router = useRouter();
-  const { kanbanid } = router.query;
-
-  // useEffect(() => {
-  //   if (router.isReady && kanbanid) {
-  //     setSelectedKanbanId(kanbanid);
-  //   }
-  // }, [router.isReady])
 
   // hook
   const {
@@ -194,7 +187,6 @@ const Board = () => {
           }}
         >
           <div>
-            {/* <EmojiPicker icon={icon} onChange={onIconChange} /> */}
             <TextField
               value={title}
               onChange={handleUpdateKanbanName}

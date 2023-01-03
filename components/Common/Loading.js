@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from '@mui/material'
+import { CircularProgress } from '@mui/material'
 
 const Loading = props => {
   return (

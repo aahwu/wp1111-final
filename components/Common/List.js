@@ -1,15 +1,13 @@
-import styled from 'styled-components';
 import { Droppable } from "react-beautiful-dnd";
-import { Box, Button, Typography, Divider, TextField, IconButton, Card, listSubheaderClasses } from '@mui/material'
+import { TextField, IconButton } from '@mui/material'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import { useKanban } from '../hooks/useKanban';
-import { useState } from 'react';
 import DragCard from "./DragCard"
 
 const List = ({ list, listInd }) => {
 
-  const { lists, setLists, setModalOpened, createCard, deleteList, updateList } = useKanban();
+  const { lists, setLists, createCard, deleteList, updateList } = useKanban();
 
   const handleCreateCard = async () => {
     try {
@@ -42,7 +40,6 @@ const List = ({ list, listInd }) => {
       const newList = {...newLists[index]}
       newList.name = newName;
       newLists[index] = newList;
-      console.log(newLists)
       setLists([...newLists])
       await updateList({
         variables: {

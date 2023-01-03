@@ -1,8 +1,6 @@
-import styled from 'styled-components';
 import { Draggable } from "react-beautiful-dnd";
-import { Box, Button, Typography, Divider, TextField, IconButton, Card } from '@mui/material'
+import { Typography, Card } from '@mui/material'
 import { useKanban } from '../hooks/useKanban';
-import { useEffect } from 'react';
 
 const DragCard = ({ card, cardInd }) => {
 
@@ -11,7 +9,6 @@ const DragCard = ({ card, cardInd }) => {
   const handleModal = () => {
     setSelectedCard(card);
     setModalOpened(true);
-    console.log(card)
   }
 
   return (

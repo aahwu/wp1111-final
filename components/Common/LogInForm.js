@@ -1,16 +1,12 @@
-import React, { useEffect } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input } from 'antd';
-import { height } from '@mui/system';
-import { useRouter } from 'next/router'
+import { Button, Form, Input } from 'antd';
 import { useKanban } from '../hooks/useKanban';
 import Link from 'next/link'
 import { useState } from 'react';
 
 const LogInForm = () => {
 
-  const { setLogin, loginUser } = useKanban();
-  const router = useRouter()
+  const { loginUser } = useKanban();
   const [loading, setLoading] = useState(false);
   const [loginUsername, setLoginUsername] = useState('');
   const [loginPassword, setLoginPassword] = useState('');

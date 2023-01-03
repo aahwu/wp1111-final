@@ -1,16 +1,13 @@
 import React from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { LoadingButton } from '@mui/lab';
-import { Button, Checkbox, Form, Input } from 'antd';
-import { useRouter } from 'next/router'
+import { Button, Form, Input } from 'antd';
 import { useKanban } from '../hooks/useKanban';
 import { useState } from 'react';
 import Link from 'next/link'
 
 const RegisterForm = () => {
 
-  const { setLogin, createUser, displayStatus } = useKanban();
-  const router = useRouter()
+  const { createUser, displayStatus } = useKanban();
   const [loading, setLoading] = useState(false);
   const [newUsername, setNewUsername] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -18,10 +15,6 @@ const RegisterForm = () => {
   const [form] = Form.useForm();
 
   const onFinish = async (values) => {
-    console.log('Received values of form: ', values);
-    console.log(newUsername)
-    console.log(newPassword)
-    console.log(checkPassword)
     setLoading(true);
     if (newPassword !== checkPassword) {
       displayStatus({

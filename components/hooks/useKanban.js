@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { useState, useEffect, createContext, useContext, useDebugValue } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import { message } from 'antd'
 import {
   CREATE_CARD_MUTATION, 
@@ -22,8 +22,6 @@ import {
 import { GET_KANBANS_QUERY } from "../../graphql/queries";
 import { getClient } from "../../lib/getClient";
 import { useRouter } from 'next/router'
-
-const client = getClient();
 
 const KanbanContext = createContext({
   username: '',
@@ -59,16 +57,6 @@ const KanbanContext = createContext({
 
   loginUser: () => {},
 });
-
-// generate fake array data: [ { id: ..., content: 'item ${ k+offset }}, ... ]
-const getItems = (count, offset = 0) => {
-  return Array.from({ length: count }, (v, k) => k)
-    .map(k => ({
-      id: `item-${k + offset}-${new Date().getTime()}`,
-      content: `item ${k + offset}`
-    })
-  );
-};
 
 const KanbanProvider = (props) => {
 
@@ -170,7 +158,6 @@ const KanbanProvider = (props) => {
   useEffect(() => {
     if (loggedinUserData) {
       const loggedinUser = loggedinUserData.login;
-      console.log(loggedinUser)
       const payload = loggedinUser.payload;
       if (payload === 'SUCCESS') {
         setToken(loggedinUser.token);
