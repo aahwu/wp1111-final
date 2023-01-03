@@ -1,5 +1,5 @@
 import { Droppable } from "react-beautiful-dnd";
-import { TextField, IconButton } from '@mui/material'
+import { TextField, IconButton, Divider } from '@mui/material'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import { useKanban } from '../hooks/useKanban';
@@ -8,7 +8,6 @@ import DragCard from "./DragCard"
 const List = ({ list, listInd }) => {
 
   const { lists, setLists, createCard, deleteList, updateList } = useKanban();
-
   const handleCreateCard = async () => {
     try {
       await createCard({
@@ -113,7 +112,7 @@ const List = ({ list, listInd }) => {
               minHeight: '100%'
             }}
           >
-            {(!list.cards) ? <></>
+            {(!list.cards || list.cards.length === 0) ? <div style={{ width: '100%', height: '44px' }}></div>
             : list.cards.map((card, index) => (
                 <DragCard card={card} cardInd={index} key={card._id} />
               )

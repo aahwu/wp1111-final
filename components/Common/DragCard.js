@@ -1,6 +1,7 @@
 import { Draggable } from "react-beautiful-dnd";
-import { Typography, Card } from '@mui/material'
+import { Typography, Card, Divider } from '@mui/material'
 import { useKanban } from '../hooks/useKanban';
+// import { Card } from "antd";
 
 const DragCard = ({ card, cardInd }) => {
 
@@ -29,9 +30,18 @@ const DragCard = ({ card, cardInd }) => {
           }}
           onClick={handleModal}
         >
-          <Typography>
+          <Typography sx={{ fontSize: 18 }} >
             {card.name === '' ? 'Untitled' : card.name}
           </Typography>
+          { card.body ? 
+            <>
+              <Divider sx={{ margin: '10px 0', flex: 0 }} />
+              <Typography sx={{ fontSize: 14 }} color="text.secondary" >
+                {card.body}
+              </Typography>
+            </>
+            : <></>
+          }
         </Card>
       )}
     </Draggable>

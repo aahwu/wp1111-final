@@ -122,8 +122,16 @@ const Kanban = () => {
         }}>
           <DragDropContext onDragEnd={onDragEnd}>
             {lists.map((list, index) => (
-              <div key={list._id}>
+              <div 
+                key={list._id}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  // backgroundColor: 'gray'
+                }}  
+              >
                 <List list={list} listInd={index} key={list._id} />
+                <Divider orientation="vertical" flexItem />
               </div>
             ))}
           </DragDropContext>
