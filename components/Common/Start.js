@@ -33,7 +33,7 @@ const Start = () => {
           marginBottom: '10px'
         }}
       >
-        Create kanban
+        Add kanban
       </LoadingButton>
       {!kanbans ? <></> : 
         <div

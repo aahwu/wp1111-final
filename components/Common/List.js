@@ -57,7 +57,7 @@ const List = ({ list, listInd }) => {
     <div style={{
       width: '300px', 
       padding: '10px', 
-      marginRight: '10px', 
+      // marginRight: '10px', 
       minHeight:'100px'
     }}>
       <div
@@ -109,7 +109,7 @@ const List = ({ list, listInd }) => {
             ref={provided.innerRef}
             {...provided.droppableProps}
             style={{
-              minHeight: '100%'
+              // minHeight: '100%',
             }}
           >
             {(!list.cards || list.cards.length === 0) ? <div style={{ width: '100%', height: '44px' }}></div>

@@ -2,12 +2,14 @@ import { useKanban } from "../hooks/useKanban";
 import { Box, Button, Typography, Divider } from '@mui/material'
 import List from "./List";
 import { DragDropContext } from "react-beautiful-dnd";
-
+import { LoadingButton } from '@mui/lab';
+import { useState } from "react";
 
 const Kanban = () => {
 
   // hook
   const { lists, setLists, selectedKanbanId, updateCardPosition, createList } = useKanban();
+  const [loading, setLoading] = useState(false);
 
   // move element from startIndex to endIndex
   const reorder = (listObject, startIndex, endIndex) => {
@@ -86,11 +88,13 @@ const Kanban = () => {
 
   const handleCreateList = async () => {
     try {
+      setLoading(true);
       await createList({
         variables: {
           kanbanId: selectedKanbanId
         }
-      })
+      });
+      setLoading(false);
     } catch (err) {
       alert(err)
     }
@@ -112,8 +116,31 @@ const Kanban = () => {
         </Typography>
       </div>
       <Divider sx={{ margin: '10px 0', flex: 0 }} />
-      {!lists ? <></> : 
-        <Box sx={{
+      {!lists ? 
+      <div 
+        style={{
+          width: '100%',
+          height: '100%',
+          color: 'black',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <LoadingButton
+          variant='outlined'
+          color='success'
+          onClick={handleCreateList}
+          loading={loading}
+          style={{
+            marginBottom: '10px'
+          }}
+        >
+          Add list
+        </LoadingButton>
+      </div>
+      
+      : <Box sx={{
           display: 'flex',
           alignItems: 'flex-start',
           overflowX: 'auto',
@@ -127,11 +154,13 @@ const Kanban = () => {
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
-                  // backgroundColor: 'gray'
+                  // backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                  marginRight: '10px', 
+                  borderRadius: '5px'
                 }}  
               >
                 <List list={list} listInd={index} key={list._id} />
-                <Divider orientation="vertical" flexItem />
+                <Divider orientation="vertical" variant="middle" flexItem />
               </div>
             ))}
           </DragDropContext>
