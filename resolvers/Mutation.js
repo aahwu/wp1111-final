@@ -5,13 +5,13 @@ const { AuthenticationError } = require('apollo-server');
 const Mutation = {
 
   /* User mutation */
-  createUser: async (parent, { username, password }, { UserModel }) => {
+  createUser: async (parent, { username, nickname, password }, { UserModel }) => {
     const userExist = await UserModel.findOne({ name: username });
     if (userExist) {
       return { user: userExist, payload: 'FAIL' };
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await new UserModel({ name: username, password: hashedPassword}).save();
+    const newUser = await new UserModel({ name: username, nickname: nickname, password: hashedPassword}).save();
 
     return { user: newUser, payload: 'SUCCESS'};
   },

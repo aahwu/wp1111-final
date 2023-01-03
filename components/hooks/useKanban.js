@@ -158,10 +158,11 @@ const KanbanProvider = (props) => {
   useEffect(() => {
     if (loggedinUserData) {
       const loggedinUser = loggedinUserData.login;
+      console.log(loggedinUser)
       const payload = loggedinUser.payload;
       if (payload === 'SUCCESS') {
         setToken(loggedinUser.token);
-        setUsername(loggedinUser.user.name);
+        setUsername(loggedinUser.user.nickname === '' ? loggedinUser.user.name : loggedinUser.user.nickname);
         setLogin(true);
         setKanbans(loggedinUser.kanbans);
         router.push('/kanban')

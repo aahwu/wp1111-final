@@ -11,9 +11,6 @@ import Subscription from '../../resolvers/Subscription';
 import Kanban from '../../resolvers/Kanban'
 import List from '../../resolvers/List'
 import dbConnect from "../../lib/dbConnect";
-import { resolve } from 'path';
-import { readFileSync } from 'fs';
-import getConfig from 'next/config';
 
 const jwt = require('jsonwebtoken')
 
@@ -26,7 +23,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createUser(username: String!, password: String!): RegisterPayload!
+    createUser(username: String!, nickname: String, password: String!): RegisterPayload!
     login(username: String!, password: String!): LoginPayload!
 
     createKanban: Kanban!
@@ -64,7 +61,8 @@ const typeDefs = gql`
   }
   type User {
     _id: ID!
-    name: String!
+    name: String
+    nickname: String
   }
   type Kanban {
     _id: ID

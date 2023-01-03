@@ -38,7 +38,7 @@ const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {
       <div
         style={{
           height: 32,
-          margin: 8,
+          margin: '16px 8px 8px 8px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between'
@@ -46,6 +46,8 @@ const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {
       >
         <Typography style={{
           color: 'white',
+          padding: '0 0 0 20px',
+          fontSize: '20px'
         }}>
           {username ? username : sidebarItem.defaultUser}
         </Typography>

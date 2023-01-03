@@ -8,6 +8,10 @@ const UserSchema = new Schema({
     required: 
       [true, 'Name field is required.']
   },
+  nickname: {
+    type: String,
+    default: '',
+  },
   password: {
     type: String, 
     required: 

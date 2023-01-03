@@ -10,6 +10,7 @@ const RegisterForm = () => {
   const { createUser, displayStatus } = useKanban();
   const [loading, setLoading] = useState(false);
   const [newUsername, setNewUsername] = useState('');
+  const [newNickname, setNewNickname] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
   const [form] = Form.useForm();
@@ -25,6 +26,7 @@ const RegisterForm = () => {
       await createUser({
         variables: {
           username: newUsername,
+          nickname: newNickname,
           password: newPassword,
         }
       })
@@ -62,6 +64,16 @@ const RegisterForm = () => {
           placeholder="Create a Username" 
           value={newUsername}
           onChange={((e) => (setNewUsername(e.target.value)))}
+        />
+      </Form.Item>
+      <Form.Item
+        name="nickrname"
+      >
+        <Input
+          prefix={<UserOutlined className="site-form-item-icon" />}
+          placeholder="Create a Nickname (Optional)" 
+          value={newNickname}
+          onChange={((e) => (setNewNickname(e.target.value)))}
         />
       </Form.Item>
       
