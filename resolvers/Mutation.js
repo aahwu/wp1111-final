@@ -103,7 +103,10 @@ const Mutation = {
   },
 
   /* List mutation */
-  createList: async (parent, { kanbanId }, { KanbanModel, DroppableListModel }) => {
+  createList: async (parent, { kanbanId }, { KanbanModel, DroppableListModel, me }) => {
+    if (!me) {
+      throw new AuthenticationError("Please log in again.");
+    }
     const kanban = await KanbanModel.findById(kanbanId);
 
     if (!kanban) {
@@ -120,7 +123,10 @@ const Mutation = {
 
     return newList;
   },
-  deleteList: async (parent, { listId }, { KanbanModel, DroppableListModel, DraggableCardModel }) => {
+  deleteList: async (parent, { listId }, { KanbanModel, DroppableListModel, DraggableCardModel, me }) => {
+    if (!me) {
+      throw new AuthenticationError("Please log in again.");
+    }
     const list = await DroppableListModel.findByIdAndRemove(listId);
 
     if (!list) {
@@ -133,7 +139,10 @@ const Mutation = {
 
     return list;
   },
-  updateList: async (parent, { listId, data }, { DroppableListModel }) => {
+  updateList: async (parent, { listId, data }, { DroppableListModel, me }) => {
+    if (!me) {
+      throw new AuthenticationError("Please log in again.");
+    }
     const list = await DroppableListModel.findByIdAndUpdate(listId, data ,{ new: true });
 
     if (!list) {
@@ -144,7 +153,10 @@ const Mutation = {
   },
 
   /* Card mutation */
-  createCard: async (parent, { listId }, { DroppableListModel, DraggableCardModel }) => {
+  createCard: async (parent, { listId }, { DroppableListModel, DraggableCardModel, me }) => {
+    if (!me) {
+      throw new AuthenticationError("Please log in again.");
+    }
     const list = await DroppableListModel.findById(listId);
 
     if (!list) {
@@ -160,7 +172,10 @@ const Mutation = {
 
     return newCard;
   },
-  deleteCard: async (parent, { cardId }, { DroppableListModel, DraggableCardModel }) => {
+  deleteCard: async (parent, { cardId }, { DroppableListModel, DraggableCardModel, me }) => {
+    if (!me) {
+      throw new AuthenticationError("Please log in again.");
+    }
     const card = await DraggableCardModel.findByIdAndRemove(cardId);
 
     if (!card) {
@@ -170,7 +185,10 @@ const Mutation = {
 
     return card;
   },
-  updateCard: async (parent, { cardId, data }, { DraggableCardModel }) => {
+  updateCard: async (parent, { cardId, data }, { DraggableCardModel, me }) => {
+    if (!me) {
+      throw new AuthenticationError("Please log in again.");
+    }
     const card = await DraggableCardModel.findByIdAndUpdate(cardId, data, { new: true });
 
     if (!card) {
@@ -179,7 +197,10 @@ const Mutation = {
 
     return card;
   },
-  updateCardPosition: async (parent, { data }, { DroppableListModel, DraggableCardModel }) => {
+  updateCardPosition: async (parent, { data }, { DroppableListModel, DraggableCardModel, me }) => {
+    if (!me) {
+      throw new AuthenticationError("Please log in again.");
+    }
     if (data.sourceListId) {
       const sourceList = await DroppableListModel.findByIdAndUpdate(data.sourceListId, { DraggableCard: data.sourceCardsId});
       const sourceKeys = data.sourseCardsId;

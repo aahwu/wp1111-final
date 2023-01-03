@@ -84,10 +84,10 @@ const KanbanProvider = (props) => {
 
 
   // card mutation
-  const [createCard, { data: newCardData }] = useMutation(CREATE_CARD_MUTATION);
-  const [deleteCard, { data: deletedCardData }] = useMutation(DELETE_CARD_MUTATION);
-  const [updateCard, { data: updatedCardData }] = useMutation(UPDATE_CARD_MUTATION);
-  const [updateCardPosition] = useMutation(UPDATE_CARD_POSITION_MUTATION);
+  const [createCard, { data: newCardData }] = useMutation(CREATE_CARD_MUTATION, { context: { headers: { authorization: token } } });
+  const [deleteCard, { data: deletedCardData }] = useMutation(DELETE_CARD_MUTATION, { context: { headers: { authorization: token } } });
+  const [updateCard, { data: updatedCardData }] = useMutation(UPDATE_CARD_MUTATION, { context: { headers: { authorization: token } } });
+  const [updateCardPosition] = useMutation(UPDATE_CARD_POSITION_MUTATION, { context: { headers: { authorization: token } } });
 
   // useEffect for card mutation
   useEffect(() => {
@@ -110,9 +110,9 @@ const KanbanProvider = (props) => {
   }, [newCardData]);
 
   // list mutation
-  const [createList, { data: newListData }] = useMutation(CREATE_LIST_MUTATION);
-  const [deleteList, { data: deletedListData }] = useMutation(DELETE_LIST_MUTATION);
-  const [updateList, { data: updatedListData }] = useMutation(UPDATE_LIST_MUTATION);
+  const [createList, { data: newListData }] = useMutation(CREATE_LIST_MUTATION, { context: { headers: { authorization: token } } });
+  const [deleteList, { data: deletedListData }] = useMutation(DELETE_LIST_MUTATION, { context: { headers: { authorization: token } } });
+  const [updateList, { data: updatedListData }] = useMutation(UPDATE_LIST_MUTATION, { context: { headers: { authorization: token } } });
 
   // useEffect for list mutation
   useEffect(() => {
