@@ -12,7 +12,7 @@ const Kanban = () => {
   return (
     <>
       <Head>
-        <title>{`${username}'s kanban - Inarro`}</title>
+        <title>{username ? `${username}'s kanban - Inarro` : 'Unknown - Inarro'}</title>
         <meta
           name="description"
           content="Meta description for the kanban page"

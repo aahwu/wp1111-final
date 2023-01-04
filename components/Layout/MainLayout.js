@@ -18,11 +18,11 @@ function getItem(label, key, icon, children) {
   };
 }
 
-const MainLayout = ({ data, children }) => {
+const MainLayout = ({ children }) => {
   // console.log(data)
 
   // hook
-  const { kanbans, setSelectedKanbanId, createKanban } = useKanban();
+  const { kanbans, lists, selectedKanbanId, setSelectedKanbanId, createKanban, writeClient } = useKanban();
   const [selectedItem, setSelectedItem] = useState('');
   const router = useRouter();
 
@@ -33,6 +33,8 @@ const MainLayout = ({ data, children }) => {
     } else {
       const realKey = key.split('-')[0]
       router.push(`/kanban/${realKey}`)
+      const previousLists = lists ? [...lists] : [];
+      writeClient(selectedKanbanId, previousLists)
       setSelectedKanbanId(realKey);
       setSelectedItem(key);
     }

@@ -19,8 +19,9 @@ import {
   LOGIN_USER_MUTATION,
 
 } from "../../graphql/mutations";
+import { GET_LISTS_BY_ID_QUERY } from "../../graphql/queries";
 import { GET_KANBANS_QUERY } from "../../graphql/queries";
-import { getClient } from "../../lib/getClient";
+import { useApolloClient } from '@apollo/client';
 import { useRouter } from 'next/router'
 
 const KanbanContext = createContext({
@@ -54,8 +55,10 @@ const KanbanContext = createContext({
 
   // user mutation
   createUser: () => {},
-
   loginUser: () => {},
+
+  // write client query
+  writeClient: () => {},
 });
 
 const KanbanProvider = (props) => {
@@ -69,6 +72,7 @@ const KanbanProvider = (props) => {
   const [modalOpened, setModalOpened] = useState(false);
   const [login, setLogin] = useState(false);
   const router = useRouter()
+  const client = useApolloClient();
 
 
   // card mutation
@@ -112,6 +116,8 @@ const KanbanProvider = (props) => {
       setLists(newLists);
     }
   }, [newListData])
+
+  // useE
 
   // kanban mutation
   const [createKanban, { data: createdKanbanData }] = useMutation(CREATE_KANBAN_MUTATION, { context: { headers: { authorization: token } } });
@@ -180,6 +186,32 @@ const KanbanProvider = (props) => {
     }
   }, [loggedinUserData])
 
+  const writeClient = (previousId, previousLists) => {
+    client.writeQuery({
+      query: GET_LISTS_BY_ID_QUERY,
+      data: { // Contains the data to write
+        getListsById: previousLists.map(
+          (listObject) => ({
+            _id: listObject._id,
+            name: listObject.name,
+            cards: listObject.cards.map(
+              (cardObject) => ({
+                _id: cardObject._id,
+                name: cardObject.name,
+                body: cardObject.body,
+                position: cardObject.position,
+                parentId: cardObject.parentId,
+              })
+            )
+          })
+        )
+      },
+      variables: {
+        input: previousId
+      },
+    });
+  }
+
   const displayStatus = (s) => {
     if (s.msg) {
       const { type, msg } = s;
@@ -213,8 +245,8 @@ const KanbanProvider = (props) => {
         createCard, deleteCard, updateCard, updateCardPosition,
         createList, deleteList, updateList,
         createKanban, deleteKanban, updateKanbanName, updateKanbanDescription, updateKanbanFavorite, queryKanbans,
-        createUser,
-        loginUser,
+        createUser, loginUser,
+        writeClient,
         displayStatus,
       }}
       {...props}

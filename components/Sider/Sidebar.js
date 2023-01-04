@@ -1,5 +1,5 @@
 import { IconButton, Typography } from '@mui/material'
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Tooltip } from 'antd';
 import {
   LogoutOutlined,
 } from '@ant-design/icons';
@@ -57,16 +57,18 @@ const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {
         }}>
           {username ? username : sidebarItem.defaultUser}
         </Typography>
-        <IconButton
-          onClick={handleLogout}
-        >
-          <LogoutOutlined 
-            style={{
-              color: 'white',
-              fontSize: 20,
-            }}
-          />
-        </IconButton>
+        <Tooltip placement="rightBottom" title="Log out">
+          <IconButton
+            onClick={handleLogout}
+          >
+            <LogoutOutlined 
+              style={{
+                color: 'white',
+                fontSize: 20,
+              }}
+            />
+          </IconButton>
+        </Tooltip>
       </div>}
       <Menu
         theme="dark"
@@ -75,7 +77,7 @@ const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {
         }}
         mode="inline"
         items={sidebarItem.items}
-        defaultOpenKeys={['sub2']}
+        defaultOpenKeys={sidebarItem.items[1].children.length === 0 ? ['sub2'] : ['sub1']}
         onClick={handleOnClick}
         selectedKeys={selectedKeys}
       />
