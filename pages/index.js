@@ -2,13 +2,20 @@ import Head from 'next/head'
 import Loading from '../components/Common/Loading'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import dbConnect from '../lib/dbConnect'
+import { useKanban } from '../components/hooks/useKanban'
 
 export default function Home() {
 
   const router = useRouter()
-  
+  const { createUser } = useKanban();
   useEffect(() => {
+    createUser({
+      variables: {
+        username: 'test initialize mongoose',
+        nickname: '',
+        password: 'test123',
+      }
+    })
     router.push('/auth/login')
   }, [])
 
@@ -38,11 +45,4 @@ export default function Home() {
       </main>
     </>
   )
-}
-
-export async function getStaticProps(context) {
-  await dbConnect();
-  return {
-    props: {}, // will be passed to the page component as props
-  }
 }

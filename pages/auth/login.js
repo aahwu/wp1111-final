@@ -2,7 +2,6 @@ import { getLayout } from '../../components/Layout/AuthLayout'
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import LogInForm from '../../components/Common/LogInForm'
 import Head from 'next/head';
-import dbConnect from '../../lib/dbConnect';
 
 const login = () => {
 
@@ -47,12 +46,5 @@ const login = () => {
 }
 
 login.getLayout = getLayout;
-
-export async function getServerSideProps(context) {
-  await dbConnect();
-  return {
-    props: {}, // will be passed to the page component as props
-  }
-}
 
 export default login;
