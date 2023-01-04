@@ -5,7 +5,7 @@ import { useKanban } from '../../components/hooks/useKanban';
 import Head from 'next/head';
 
 
-const kanban = () => {
+const Kanban = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -34,4 +34,4 @@ const kanban = () => {
 
 kanban.getLayout = getLayout;
 
-export default kanban;
+export default Kanban;
