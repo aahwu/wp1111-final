@@ -56,7 +56,7 @@ const Start = () => {
           >
             Add kanban
           </LoadingButton>
-          {!kanbans ? <></> : 
+          {(!kanbans || kanbans.length === 0) ? <></> : 
             <div
               style={{
                 // height: '100%',
