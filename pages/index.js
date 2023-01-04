@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Loading from '../components/Common/Loading'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import dbConnect from "../lib/dbConnect";
 
 export default function Home() {
 
@@ -37,4 +38,10 @@ export default function Home() {
       </main>
     </>
   )
+}
+export async function getStaticProps(context) {
+  await dbConnect();
+  return {
+    props: {}, // will be passed to the page component as props
+  }
 }
