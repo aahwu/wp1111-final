@@ -29,10 +29,9 @@ export default function Home() {
         </style>
       </Head>
       <main style={{
-        flex: 'row',
-        justifyContent: 'center',
-        alignContent: 'center',
-        height: '100%',
+        position: 'absolute',
+        top: '50%',
+        left: '50%'
       }}>
         <Loading />
       </main>
