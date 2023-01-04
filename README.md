@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Inarro 
+> Inarro is a project management web application for Web Programming (111-1) final project
 
-## Getting Started
+##### Project structure (major files)
+    .
+    ├── components                    # all components and hooks used in the project
+    ├── graphql                       # client side gql files                    
+    ├── lib                           # mongoDB connection function
+    │    └── dbConnect.js                   
+    ├── models                        # mongoDB schema
+    ├── pages                         # Pages in app
+    │    ├── api                   
+    │    │    └── graphql.js          # create GraphQL api   
+    │    ├── auth                     # login & register pages
+    │    └── kanban                   # main kanban pages          
+    ├── resolvers                     # resolvers of GraphQL
+    ├── .env.local.example            # env example
+    ├── package.json            
+    ├── yarn.lock
+    └── README.md
 
-First, run the development server:
+## Install steps
+
+First, create and modify a **.env.local** file at root (next to pages).  
+
+**.env.local.example** is an example of **.env.local**:
 
 ```bash
-npm run dev
-# or
+MONGODB_URI = YOUR_MONGODB_LINK (e.g., mongodb+srv://<username>:<password>@cluster0.hpnvva4.mongodb.net/?retryWrites=true&w=majority)
+
+DEV_URL = "http://localhost:3000"
+
+PROD_URL = ""
+```
+
+Second, run the development server at root:
+
+```bash
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then you should be able to open this app at http://localhost:3000.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Service
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+### Introduction
+**Inarro** is a productivity tool mainly for project management.  
+It contains three main components: **Kanban**, **List**, **Card**.
+1. **Kanban**
+Each kanabn may represent a project (e.g., Web Programming - Final Project).
+2. **List**
+Users can create several lists, which may represent process of the project (e.g., To-do, On-going, Done).  
+3. **Card**
+Users can create many cards for every subtasks (e.g., frontend, backend, deployment).
+4. **react-beautiful-dnd**
+Lists and cards are implement with react-beautiful-dnd.
+Users can drag and drop every card between lists to manage their project.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+This app also reservers much flexibility to accomplish other type of application defined by users.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Preview
+<img src="./images/Inarro.png">
 
-## Learn More
+### Other features
+1. Account system with **bcrypt** and **jsonwebtoken**. 
+2. Add users' favorite kanban.  
+3. To be continue ...
 
-To learn more about Next.js, take a look at the following resources:
+## Deploy link
+https://inarro.vercel.app
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Demo link
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Review
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### Package & skill:
+- Frontend
+  - Next.js
+  - React
+  - Ant Design, Material UI
+  - react-beautiful-dnd
+- Backend 
+  - GraphQL
+  - bcrypt
+  - jsonwebtoken
+- Database
+  - MongoDB, mongoose
+- Deployment
+  - Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+#### Thoughts
+I think the meme listed below perfectly describes the project and what I learn in this course.
+Good news is I'm be able to fly; Bad news is I don't know why I'm be able to fly.  
+
+What I learn in this course makes me be able to build this small but interesting project.
+During this project, however, I encounter numberless problems.
+For most of these problems, I don't know why they happened, where do they come from, and how should I solve them.
+Therefore, I may spend half the time visiting stack overflow and ChatGPT.
+
+Nevertheless, I'm still glad I have taken this course.
+This course provides less but enough knowledge for us to explore more skills in web service.
+After completion of this course, we are able to build many kinds of applications. 
+For me, this project is one of the most interesting work I have done in NTU.
+
+
+<img src="./images/Meme.jpg" width="500" height="600">  
+
+
+

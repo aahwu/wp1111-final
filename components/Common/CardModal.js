@@ -31,7 +31,6 @@ const CardModal = () => {
       const newListObject = {...listObject};
       newListObject.cards = result;
       newLists[listInd] = newListObject;
-
       setLists(
         [...newLists]
       );
