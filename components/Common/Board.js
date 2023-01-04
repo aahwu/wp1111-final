@@ -10,7 +10,6 @@ import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined'
 import StarOutlinedIcon from '@mui/icons-material/StarOutlined'
 import CardModal from "./CardModal";
 import { useRouter } from 'next/router'
-import { useApolloClient } from '@apollo/client';
 
 let timer
 const timeout = 500
@@ -19,8 +18,7 @@ const Board = () => {
   
   // router
   const router = useRouter();
-  // client
-  const client = useApolloClient();
+
   // hook
   const {
     token,
@@ -54,7 +52,6 @@ const Board = () => {
     variables: {
       input: selectedKanbanId
     },
-    // fetchPolicy: 'cache-and-network',
     context: {
       headers: {
         authorization: token,
@@ -65,7 +62,6 @@ const Board = () => {
   useEffect(() => {
     if(typeof listsData !== 'undefined') {
       setLists(listsData.getListsById);
-      console.log(listsData);
     }
   }, [listsData])
 
