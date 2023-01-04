@@ -190,11 +190,11 @@ const KanbanProvider = (props) => {
     client.writeQuery({
       query: GET_LISTS_BY_ID_QUERY,
       data: { // Contains the data to write
-        getListsById: previousLists.map(
+        getListsById: !previousLists ? [] : previousLists.map(
           (listObject) => ({
             _id: listObject._id,
             name: listObject.name,
-            cards: listObject.cards.map(
+            cards: !listObject.cards ? [] : listObject.cards.map(
               (cardObject) => ({
                 _id: cardObject._id,
                 name: cardObject.name,

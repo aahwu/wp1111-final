@@ -40,9 +40,9 @@ export default function Home() {
   )
 }
 
-// export async function getStaticProps(context) {
-//   await dbConnect(process.env.MONGODB_URI);
-//   return {
-//     props: {}, // will be passed to the page component as props
-//   }
-// }
+export async function getStaticProps(context) {
+  await dbConnect();
+  return {
+    props: {}, // will be passed to the page component as props
+  }
+}
