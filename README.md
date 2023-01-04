@@ -33,9 +33,10 @@ DEV_URL = "http://localhost:3000"
 PROD_URL = ""
 ```
 
-Second, run the development server at root:
+Second, install packages and run the development server at root:
 
 ```bash
+yarn
 yarn dev
 ```
 
@@ -70,7 +71,7 @@ This app also reservers much flexibility to accomplish other type of application
 https://inarro.vercel.app
 
 ## Demo link
-
+https://youtu.be/2jYNO-geBu8
 
 ## Review
 
@@ -104,7 +105,7 @@ After completion of this course, we are able to build many kinds of applications
 For me, this project is one of the most interesting work I have done in NTU.
 
 
-<img src="./images/Meme.jpg" width="500" height="600">  
+<img src="./images/Meme.jpg" width="250" height="300">  
 
 
 
