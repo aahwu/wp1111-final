@@ -177,13 +177,13 @@ const Board = () => {
           <IconButton variant='outlined' onClick={handleUpdateKanbanFavorite}>
             {
               isFavourite ? (
-                <StarOutlinedIcon color='warning' />
+                <StarOutlinedIcon />
               ) : (
                 <StarBorderOutlinedIcon />
               )
             }
           </IconButton>
-          <IconButton variant='outlined' color='error' onClick={handleDeleteKanban}>
+          <IconButton variant='outlined' onClick={handleDeleteKanban}>
             <DeleteOutlinedIcon />
           </IconButton>
         </div>
