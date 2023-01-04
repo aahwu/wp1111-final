@@ -5,7 +5,7 @@ import { useKanban } from '../hooks/useKanban';
 const Start = () => {
 
   const [loading, setLoading] = useState(false)
-  const { username, kanbans, createKanban } = useKanban();
+  const { login, username, kanbans, createKanban } = useKanban();
 
   // handle onclick of menu
   const handleOnClick = async () => {
@@ -24,49 +24,63 @@ const Start = () => {
         justifyContent: 'center'
       }}
     >
-      <div
-        style={{
-          fontSize: '40px',
-          color: 'black',
-          marginBottom: '40px'
-        }}
-      >
-        {`Welcome, ${username}`}
-      </div>
-      <LoadingButton
-        variant='outlined'
-        color='success'
-        onClick={handleOnClick}
-        loading={loading}
-        style={{
-          marginBottom: '10px'
-        }}
-      >
-        Add kanban
-      </LoadingButton>
-      {!kanbans ? <></> : 
+      {!login ? 
         <div
           style={{
-            // height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '18px',
+            fontSize: '40px',
             color: 'black',
+            marginBottom: '40px'
           }}
         >
-          <p
+          Please log in again.
+        </div>
+      :
+        <>
+          <div
+            style={{
+              fontSize: '40px',
+              color: 'black',
+              marginBottom: '40px'
+            }}
+          >
+            {`Welcome, ${username}`}
+          </div>
+          <LoadingButton
+            variant='outlined'
+            color='success'
+            onClick={handleOnClick}
+            loading={loading}
             style={{
               marginBottom: '10px'
             }}
           >
-            or
-          </p>
-          <p>
-            Select your kanban
-          </p>
-        </div>
+            Add kanban
+          </LoadingButton>
+          {!kanbans ? <></> : 
+            <div
+              style={{
+                // height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '18px',
+                color: 'black',
+              }}
+            >
+              <p
+                style={{
+                  marginBottom: '10px'
+                }}
+              >
+                or
+              </p>
+              <p>
+                Select your kanban
+              </p>
+            </div>
+          }
+        </>
       }
     </div>
   )
