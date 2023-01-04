@@ -28,6 +28,7 @@ const KanbanContext = createContext({
   username: '',
   token: '',
   selectedKanbanId: '',
+  selectedItem: '',
   kanbans: [],
   lists: [],
   selectedCard: {},
@@ -67,6 +68,7 @@ const KanbanProvider = (props) => {
   const [username, setUsername] = useState('');
   const [token, setToken] = useState('');
   const [selectedKanbanId, setSelectedKanbanId] = useState('');
+  const [selectedItem, setSelectedItem] = useState('');
   const [kanbans, setKanbans] = useState([]);
   const [lists, setLists] = useState([]);
   const [selectedCard, setSelectedCard] = useState({});
@@ -138,6 +140,7 @@ const KanbanProvider = (props) => {
       setKanbans(newKanbans)
       router.push(`/kanban/${newKanban._id}`)
       setSelectedKanbanId(newKanban._id);
+      setSelectedItem(newKanban._id);
     }
   }, [createdKanbanData])
 
@@ -243,8 +246,8 @@ const KanbanProvider = (props) => {
   return (
     <KanbanContext.Provider
       value={{
-        username, token, selectedKanbanId, kanbans, lists, selectedCard, modalOpened, login,
-        setUsername, setToken, setSelectedKanbanId, setKanbans, setLists, setSelectedCard, setModalOpened, setLogin,
+        username, token, selectedKanbanId, selectedItem, kanbans, lists, selectedCard, modalOpened, login,
+        setUsername, setToken, setSelectedKanbanId, setSelectedItem, setKanbans, setLists, setSelectedCard, setModalOpened, setLogin,
         createCard, deleteCard, updateCard, updateCardPosition,
         createList, deleteList, updateList,
         createKanban, deleteKanban, updateKanbanName, updateKanbanDescription, updateKanbanFavorite, queryKanbans,

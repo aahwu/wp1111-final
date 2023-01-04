@@ -22,8 +22,7 @@ const MainLayout = ({ children }) => {
   // console.log(data)
 
   // hook
-  const { kanbans, lists, selectedKanbanId, setSelectedKanbanId, createKanban, writeClient } = useKanban();
-  const [selectedItem, setSelectedItem] = useState('');
+  const { kanbans, lists, selectedKanbanId, selectedItem, setSelectedKanbanId, setSelectedItem, createKanban, writeClient } = useKanban();
   const router = useRouter();
 
   // handle onclick of menu
