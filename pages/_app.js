@@ -2,7 +2,8 @@ import '../styles/globals.css'
 import Head from 'next/head';
 import { KanbanProvider } from '../components/hooks/useKanban'
 import { ApolloClient, InMemoryCache, ApolloProvider, split, HttpLink, ApolloLink, from } from '@apollo/client';
-import { getClient } from '../lib/getClient';
+import mongoose from 'mongoose'
+import dbConnect from '../lib/dbConnect';
 
 const link = new HttpLink({
   uri: '/api/graphql',
@@ -44,3 +45,9 @@ export default function App({ Component, pageProps }) {
     </div>
   )
 }
+
+// App.getInitialProps = async (ctx) => {
+//   await dbConnect();
+//   return {}
+// }
+
