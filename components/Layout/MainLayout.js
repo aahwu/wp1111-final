@@ -28,13 +28,13 @@ const MainLayout = ({ children }) => {
 
   // handle onclick of menu
   const handleOnClick = async ({ key }) => {
+    const previousLists = lists ? [...lists] : [];
+    writeClient(selectedKanbanId, previousLists)
     if (key === 'addKanban') {
       await createKanban();
     } else {
       const realKey = key.split('-')[0]
       router.push(`/kanban/${realKey}`)
-      const previousLists = lists ? [...lists] : [];
-      writeClient(selectedKanbanId, previousLists)
       setSelectedKanbanId(realKey);
       setSelectedItem(key);
     }
