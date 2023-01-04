@@ -2,9 +2,7 @@ import { gql } from '@apollo/client';
 
 export const INITIALIZATION = gql`
   query Initialization {
-    initialization {
-      initialized
-    }
+    initialization
   }
 `;
 
