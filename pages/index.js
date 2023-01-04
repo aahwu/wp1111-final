@@ -1,9 +1,7 @@
 import Head from 'next/head'
-import AuthPage from './auth'
 import Loading from '../components/Common/Loading'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import dbConnect from '../lib/dbConnect'
 
 export default function Home() {
 

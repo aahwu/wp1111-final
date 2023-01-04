@@ -108,7 +108,12 @@ const Kanban = () => {
         justifyContent: 'space-between',
         flex: 0,
       }}>
-        <Button onClick={handleCreateList}>
+        <Button
+          onClick={handleCreateList}
+          style={{
+            padding: '6px 14px 6px 14px'
+          }}  
+        >
           Add list
         </Button>
         <Typography variant='body2' fontWeight='700' color='black'>

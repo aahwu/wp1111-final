@@ -202,8 +202,10 @@ const Board = () => {
               onChange={handleUpdateKanbanName}
               placeholder='Untitled'
               variant='outlined'
+              // multiline
               fullWidth
               sx={{
+                padding: '0 0 0 14px',
                 '& .MuiOutlinedInput-input': { padding: 0 },
                 '& .MuiOutlinedInput-notchedOutline': { border: 'unset ' },
                 '& .MuiOutlinedInput-root': { fontSize: '2rem', fontWeight: '700' }

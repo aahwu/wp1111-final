@@ -94,6 +94,8 @@ const KanbanProvider = (props) => {
       setLists(
         [...newLists]
       );
+      setSelectedCard(newCard);
+      setModalOpened(true);
     }
   }, [newCardData]);
 
@@ -158,7 +160,6 @@ const KanbanProvider = (props) => {
   useEffect(() => {
     if (loggedinUserData) {
       const loggedinUser = loggedinUserData.login;
-      console.log(loggedinUser)
       const payload = loggedinUser.payload;
       if (payload === 'SUCCESS') {
         setToken(loggedinUser.token);

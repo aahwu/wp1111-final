@@ -62,7 +62,7 @@ const List = ({ list, listInd }) => {
   return (
     <div style={{
       width: '300px', 
-      padding: '10px', 
+      padding: '10px 14px 10px 14px', 
       // marginRight: '10px', 
       minHeight:'100px'
     }}>
