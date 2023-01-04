@@ -47,4 +47,11 @@ const login = () => {
 
 login.getLayout = getLayout;
 
+export async function getStaticProps(context) {
+  await dbConnect();
+  return {
+    props: {}, // will be passed to the page component as props
+  }
+}
+
 export default login;
