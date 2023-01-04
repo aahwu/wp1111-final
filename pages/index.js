@@ -41,7 +41,7 @@ export default function Home() {
 }
 
 export async function getStaticProps(context) {
-  await dbConnect(process.env.NEXT_PUBLIC_MONGODB_URI);
+  await dbConnect(process.env.MONGODB_URI);
   return {
     props: {}, // will be passed to the page component as props
   }
