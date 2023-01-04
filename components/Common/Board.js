@@ -107,6 +107,7 @@ const Board = () => {
   }
 
   const handleUpdateKanbanName = async (e) => {
+    clearTimeout(timer)
     const newName = e.target.value;
     setTitle(newName);
     const newKanbans = [...kanbans];
@@ -132,6 +133,7 @@ const Board = () => {
   }
 
   const handleUpdateKanbanDescription = async (e) => {
+    clearTimeout(timer)
     const newDescription = e.target.value;
     setDescription(newDescription);
     const newKanbans = [...kanbans];
@@ -140,18 +142,20 @@ const Board = () => {
     newKanban.description = newDescription;
     newKanbans[index] = newKanban;
     setKanbans([...newKanbans])
-    try {
-      await updateKanbanDescription({
-        variables: {
-          kanbanId: selectedKanbanId,
-          newData: {
-            description: newDescription,
+    timer = setTimeout(async () => {
+      try {
+        await updateKanbanDescription({
+          variables: {
+            kanbanId: selectedKanbanId,
+            newData: {
+              description: newDescription,
+            }
           }
-        }
-      });
-    } catch (err) {
-      alert(err)
-    }
+        });
+      } catch (err) {
+        alert(err)
+      }
+    }, timeout)
   }
 
   return (

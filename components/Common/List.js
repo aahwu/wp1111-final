@@ -5,6 +5,9 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import { useKanban } from '../hooks/useKanban';
 import DragCard from "./DragCard"
 
+let timer
+const timeout = 500
+
 const List = ({ list, listInd }) => {
 
   const { lists, setLists, createCard, deleteList, updateList } = useKanban();
@@ -32,26 +35,29 @@ const List = ({ list, listInd }) => {
   }
 
   const handleUpdateList = async (e) => {
+    clearTimeout(timer)
     const newName = e.target.value;
-    try {
-      const newLists = [...lists];
-      const index = newLists.findIndex((listObject) => listObject._id === list._id);
-      const newList = {...newLists[index]}
-      newList.name = newName;
-      newLists[index] = newList;
-      setLists([...newLists])
-      await updateList({
-        variables: {
-          listId: list._id,
-          newData: {
-            name: newName
+    const newLists = [...lists];
+    const index = newLists.findIndex((listObject) => listObject._id === list._id);
+    const newList = {...newLists[index]}
+    newList.name = newName;
+    newLists[index] = newList;
+    setLists([...newLists])
+    timer = setTimeout(async () => {
+      try {
+        await updateList({
+          variables: {
+            listId: list._id,
+            newData: {
+              name: newName
+            }
           }
-        }
-      })
-    } catch (err) {
-      alert(err)
-    }
-  }
+        })
+      } catch (err) {
+        alert(err);
+      }
+    }, timeout);
+  };
 
   return (
     <div style={{
