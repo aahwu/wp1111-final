@@ -5,7 +5,7 @@ import { useKanban } from '../hooks/useKanban';
 const Start = () => {
 
   const [loading, setLoading] = useState(false)
-  const { kanbans, createKanban } = useKanban();
+  const { username, kanbans, createKanban } = useKanban();
 
   // handle onclick of menu
   const handleOnClick = async () => {
@@ -24,6 +24,15 @@ const Start = () => {
         justifyContent: 'center'
       }}
     >
+      <div
+        style={{
+          fontSize: '40px',
+          color: 'black',
+          marginBottom: '40px'
+        }}
+      >
+        {`Welcome, ${username}`}
+      </div>
       <LoadingButton
         variant='outlined'
         color='success'

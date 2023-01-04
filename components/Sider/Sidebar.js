@@ -5,10 +5,12 @@ import {
 } from '@ant-design/icons';
 import { useKanban } from '../hooks/useKanban';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {
 
   const router = useRouter();
+  const [collapsed, setCollapsed] = useState(false);
   const { 
     username,
     setUsername,
@@ -34,13 +36,17 @@ const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {
   }
 
   return (
-    <Layout.Sider>
-      <div
+    <Layout.Sider
+      collapsible 
+      collapsed={collapsed} 
+      onCollapse={(value) => setCollapsed(value)}
+    >
+      {collapsed ? <></> : <div
         style={{
           height: 32,
           margin: '16px 8px 8px 8px',
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-end',
           justifyContent: 'space-between'
         }}
       >
@@ -61,7 +67,7 @@ const Sidebar = ({ sidebarItem, handleOnClick, selectedKeys }) => {
             }}
           />
         </IconButton>
-      </div>
+      </div>}
       <Menu
         theme="dark"
         style={{

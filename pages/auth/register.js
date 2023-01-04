@@ -1,6 +1,7 @@
 import { getLayout } from '../../components/Layout/AuthLayout'
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import RegisterForm from '../../components/Common/RegisterForm'
+import Head from 'next/head';
 
 const login = () => {
 
@@ -10,6 +11,13 @@ const login = () => {
 
   return (
     <>
+      <Head>
+        <title>Register - Inarro</title>
+        <meta
+          name="description"
+          content="Meta description for the register page"
+        />
+      </Head>
       <div
         style={{
           padding: 8,
