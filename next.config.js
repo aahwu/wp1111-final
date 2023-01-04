@@ -10,15 +10,16 @@
 //   }
 // };
 
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 
-module.exports = async (phase, { defaultConfig }) => {
-  /**
-   * @type {import('next').NextConfig}
-   */
-  const nextConfig = async () => {
-    /* config options here */
-    await dbConnect();
-  }
-  return nextConfig
-}
+
+// module.exports = async (phase, { defaultConfig }) => {
+//   /**
+//    * @type {import('next').NextConfig}
+//    */
+//   const nextConfig = async () => {
+//     /* config options here */
+//     await dbConnect();
+//   }
+//   return nextConfig
+// }

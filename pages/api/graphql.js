@@ -178,7 +178,7 @@ const apolloServer = new ApolloServer({
 const startServer = apolloServer.start();
 
 export default cors(async(req, res) => {
-  // await dbConnect(process.env.MONGODB_URI);
+  await dbConnect();
   await startServer;
   await apolloServer.createHandler({
       path: "/api/graphql",

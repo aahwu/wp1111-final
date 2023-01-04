@@ -2,8 +2,6 @@ import '../styles/globals.css'
 import Head from 'next/head';
 import { KanbanProvider } from '../components/hooks/useKanban'
 import { ApolloClient, InMemoryCache, ApolloProvider, split, HttpLink, ApolloLink, from } from '@apollo/client';
-import mongoose from 'mongoose'
-import dbConnect from '../lib/dbConnect';
 
 const link = new HttpLink({
   uri: '/api/graphql',
@@ -26,6 +24,12 @@ const client = new ApolloClient({
   link: from([authMiddleware, link]),
   cache: new InMemoryCache(),
 });
+
+let cached = global.mongoose
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null }
+}
 
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page);
