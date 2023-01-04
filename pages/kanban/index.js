@@ -32,6 +32,6 @@ const Kanban = () => {
   );
 }
 
-kanban.getLayout = getLayout;
+Kanban.getLayout = getLayout;
 
 export default Kanban;
