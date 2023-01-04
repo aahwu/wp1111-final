@@ -11,6 +11,9 @@ import StarOutlinedIcon from '@mui/icons-material/StarOutlined'
 import CardModal from "./CardModal";
 import { useRouter } from 'next/router'
 
+let timer
+const timeout = 500
+
 const Board = () => {
   
   // router
@@ -29,6 +32,7 @@ const Board = () => {
     updateKanbanDescription,
     updateKanbanFavorite,
   } = useKanban();
+  const [previousId, setPreviousId] = useState('');
   const [isFavourite, setIsFavourite] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('')
@@ -111,18 +115,20 @@ const Board = () => {
     newKanban.name = newName;
     newKanbans[index] = newKanban;
     setKanbans([...newKanbans])
-    try {
-      await updateKanbanName({
-        variables: {
-          kanbanId: selectedKanbanId,
-          newData: {
-            name: newName,
+    timer = setTimeout(async () => {
+      try {
+        await updateKanbanName({
+          variables: {
+            kanbanId: selectedKanbanId,
+            newData: {
+              name: newName,
+            }
           }
-        }
-      });
-    } catch (err) {
-      alert(err)
-    }
+        });
+      } catch (err) {
+        alert(err)
+      }
+    }, timeout);
   }
 
   const handleUpdateKanbanDescription = async (e) => {
