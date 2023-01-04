@@ -1,4 +1,4 @@
-import { useLazyQuery, useMutation } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { useState, useEffect, createContext, useContext } from "react";
 import { message } from 'antd'
 import {
@@ -19,7 +19,7 @@ import {
   LOGIN_USER_MUTATION,
 
 } from "../../graphql/mutations";
-import { GET_LISTS_BY_ID_QUERY } from "../../graphql/queries";
+import { GET_LISTS_BY_ID_QUERY, INITIALIZATION } from "../../graphql/queries";
 import { GET_KANBANS_QUERY } from "../../graphql/queries";
 import { useApolloClient } from '@apollo/client';
 import { useRouter } from 'next/router'
@@ -59,6 +59,7 @@ const KanbanContext = createContext({
 
   // write client query
   writeClient: () => {},
+
 });
 
 const KanbanProvider = (props) => {
@@ -74,6 +75,8 @@ const KanbanProvider = (props) => {
   const router = useRouter()
   const client = useApolloClient();
 
+  // initialization
+  const { data } = useQuery(INITIALIZATION);
 
   // card mutation
   const [createCard, { data: newCardData }] = useMutation(CREATE_CARD_MUTATION, { context: { headers: { authorization: token } } });

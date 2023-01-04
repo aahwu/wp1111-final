@@ -1,5 +1,13 @@
 import { gql } from '@apollo/client';
 
+export const INITIALIZATION = gql`
+  query Initialization {
+    initialization {
+      initialized
+    }
+  }
+`;
+
 export const GET_KANBANS_QUERY = gql`
   query Kanbans($username: String) {
     kanbans(username: $username) {

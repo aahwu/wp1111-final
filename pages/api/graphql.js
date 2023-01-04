@@ -16,6 +16,7 @@ const jwt = require('jsonwebtoken')
 
 const typeDefs = gql`
   type Query {
+    initialization: Boolean
     kanbans(username: String): [Kanban!]
     lists(query: String!): [List!]
     getListsById(query: ID!): [List!]

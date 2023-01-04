@@ -5,6 +5,11 @@ const { AuthenticationError } = require('apollo-server');
 
 const Query = {
   
+  initialization: async (parent, args, { UserModel }) => {
+    const user = await UserModel.findOne({});
+    return true;
+  },
+
   kanbans: async (parent, { username }, { KanbanModel, UserModel, me }) => {
     if (!me) {
       throw new AuthenticationError("Please log in again.");
