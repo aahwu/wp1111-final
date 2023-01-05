@@ -100,7 +100,7 @@ For most of these problems, I don't know why they happened, where do they come f
 Therefore, I may spend half the time visiting stack overflow and ChatGPT.
 
 Nevertheless, I'm still glad I have taken this course.
-This course provides less but enough knowledge for us to explore more skills in web service.
+This course provides enough knowledge for us to explore more skills in web service.
 After completion of this course, we are able to build many kinds of applications. 
 For me, this project is one of the most interesting work I have done in NTU.
 
